@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +7,28 @@ using UnityEngine.UI;
 
 public class GameService : MonoBehaviour, IPointerClickHandler
 {
-    private InputService inputService;
+    [Header("UI Elements")]
+    [SerializeField] private Button getChestButton;
+    [SerializeField] private ChestView chestPrefab;
+
+    public InputService InputService;
+    public ChestService ChestService;
+
     private GraphicRaycaster raycaster;
 
-    private void Start()
+    private void Awake()
     {
         raycaster = GetComponent<GraphicRaycaster>();
-        inputService = new InputService(raycaster);
+        InputService = new InputService(raycaster);
+        ChestService = new ChestService(chestPrefab);
+
+        getChestButton.onClick.AddListener(GenerateRandomChest);
     }
+
+    private void GenerateRandomChest() => ChestService.GenerateRandomChest();
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        inputService.HandlePlayerClicked(eventData);
+        InputService.HandlePlayerClicked(eventData);
     }
 }

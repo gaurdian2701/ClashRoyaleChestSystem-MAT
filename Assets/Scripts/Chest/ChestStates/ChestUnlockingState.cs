@@ -6,7 +6,7 @@ public class ChestUnlockingState : IStateInterface
 {
     private ChestController controller;
     public ChestUnlockingState(ChestController controller) {  this.controller = controller; }
-    public void OnStateEnter()
+    public override void OnStateEnter()
     {
     }
 }

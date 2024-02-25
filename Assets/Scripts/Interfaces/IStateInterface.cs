@@ -1,5 +1,6 @@
 
-public interface IStateInterface
+public abstract class IStateInterface
 {
-    public void OnStateEnter()
+    public virtual void OnStateEnter() { }
+    public virtual void Update() { }
 }

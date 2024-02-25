@@ -12,6 +12,7 @@ public class ChestStateMachine
     {
         this.controller = controller;
         CreateStates();
+        currentState = states[ChestState.LOCKED];
     }
 
     public void Update()
