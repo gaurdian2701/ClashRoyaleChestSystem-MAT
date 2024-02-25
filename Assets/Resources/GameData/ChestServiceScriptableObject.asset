@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f080dc8ce5bed7e48baa8036a06e5a23, type: 3}
-  m_Name: EpicChest
+  m_Script: {fileID: 11500000, guid: e15e45a5ee58a344da46cbab9b456bf2, type: 3}
+  m_Name: ChestServiceScriptableObject
   m_EditorClassIdentifier: 
-  ChestType: 2
-  ChestImage: {fileID: 1255700213, guid: c3d8506b5baf8c2449f501c3c3287075, type: 3}
-  LowerCoinLimit: 600
-  UpperCoinLimit: 800
-  LowerGemLimit: 45
-  UpperGemLimit: 60
-  WaitTime: 60
+  chestLimit: 6

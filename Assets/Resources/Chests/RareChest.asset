@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RareChest
   m_EditorClassIdentifier: 
   ChestType: 1
+  ChestImage: {fileID: 1594820846, guid: c3d8506b5baf8c2449f501c3c3287075, type: 3}
   LowerCoinLimit: 300
   UpperCoinLimit: 500
   LowerGemLimit: 20

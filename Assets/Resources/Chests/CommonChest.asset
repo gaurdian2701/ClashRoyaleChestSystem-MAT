@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CommonChest
   m_EditorClassIdentifier: 
   ChestType: 0
+  ChestImage: {fileID: -71052542, guid: c3d8506b5baf8c2449f501c3c3287075, type: 3}
   LowerCoinLimit: 100
   UpperCoinLimit: 200
   LowerGemLimit: 10

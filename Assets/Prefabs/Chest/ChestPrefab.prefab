@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3719004526878145562}
   - component: {fileID: 8702853498866783483}
   m_Layer: 0
-  m_Name: LockStatusText
+  m_Name: ChestStateText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,6 +226,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af7266cf5c78984c8e624a3a0899c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chestImage: {fileID: 8920551281682821658}
+  timerText: {fileID: 686087707827023523}
+  chestStateText: {fileID: 8702853498866783483}
 --- !u!1 &3527036669415122415
 GameObject:
   m_ObjectHideFlags: 0

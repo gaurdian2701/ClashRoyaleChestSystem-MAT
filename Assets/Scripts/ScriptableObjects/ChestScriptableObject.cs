@@ -7,16 +7,10 @@ using UnityEngine.UIElements;
 public class ChestScriptableObject : ScriptableObject
 {
     public ChestType ChestType;
-    public Image ChestImage;
+    public Sprite ChestImage;
     public int LowerCoinLimit;
     public int UpperCoinLimit;
     public int LowerGemLimit;
     public int UpperGemLimit;
     public int WaitTime;
-
-    public struct UIInfo
-    {
-        
-    }
-
 }

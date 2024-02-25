@@ -5,27 +5,27 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GameService : MonoBehaviour, IPointerClickHandler
+public class GameService : GenericMonoSingleton<GameService>, IPointerClickHandler
 {
-    [Header("UI Elements")]
-    [SerializeField] private Button getChestButton;
+    [Header("CHEST DATA")]
     [SerializeField] private ChestView chestPrefab;
+    [SerializeField] private ChestServiceScriptableObject chestServiceSO;
 
     public InputService InputService;
     public ChestService ChestService;
+    public EventService EventService;
 
     private GraphicRaycaster raycaster;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         raycaster = GetComponent<GraphicRaycaster>();
         InputService = new InputService(raycaster);
-        ChestService = new ChestService(chestPrefab);
-
-        getChestButton.onClick.AddListener(GenerateRandomChest);
+        ChestService = new ChestService(chestPrefab, chestServiceSO);
+        EventService = new EventService();
     }
-
-    private void GenerateRandomChest() => ChestService.GenerateRandomChest();
 
     public void OnPointerClick(PointerEventData eventData)
     {

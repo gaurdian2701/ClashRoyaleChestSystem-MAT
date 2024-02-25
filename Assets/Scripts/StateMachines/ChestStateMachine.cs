@@ -10,6 +10,7 @@ public class ChestStateMachine
     private IStateInterface currentState;
     public ChestStateMachine(ChestController controller)
     {
+        states = new Dictionary<ChestState, IStateInterface> ();
         this.controller = controller;
         CreateStates();
         currentState = states[ChestState.LOCKED];
