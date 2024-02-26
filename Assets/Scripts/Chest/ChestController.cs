@@ -14,11 +14,9 @@ public class ChestController
     {   
         this.ChestView = chestView;
         ChestData = chestSO;
-        CreateStateMachine();
         timerController = new TimerController(ChestData.WaitTime);
-
         ChestView.SetChestController(this);
-        ChestView.InitializeChestData();
+        CreateStateMachine();
     }
 
     public void UpdateTimeStep(float timeStep)

@@ -13,12 +13,19 @@ public class ChestStateMachine
         states = new Dictionary<ChestState, IStateInterface> ();
         this.controller = controller;
         CreateStates();
-        currentState = states[ChestState.LOCKED];
+        ChangeState(ChestState.LOCKED);
     }
 
     public void Update()
     {
         currentState?.Update();
+    }
+
+    public void ChangeState(ChestState state)
+    {
+        currentState?.OnStateExit();
+        currentState = states[state];
+        currentState?.OnStateEnter();
     }
 
     private void CreateStates()

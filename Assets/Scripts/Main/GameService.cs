@@ -10,18 +10,16 @@ public class GameService : GenericMonoSingleton<GameService>, IPointerClickHandl
     [Header("CHEST DATA")]
     [SerializeField] private ChestView chestPrefab;
     [SerializeField] private ChestServiceScriptableObject chestServiceSO;
+    [SerializeField] private GraphicRaycaster raycaster;
 
     public InputService InputService;
     public ChestService ChestService;
     public EventService EventService;
 
-    private GraphicRaycaster raycaster;
-
     protected override void Awake()
     {
         base.Awake();
 
-        raycaster = GetComponent<GraphicRaycaster>();
         InputService = new InputService(raycaster);
         ChestService = new ChestService(chestPrefab, chestServiceSO);
         EventService = new EventService();
@@ -29,6 +27,7 @@ public class GameService : GenericMonoSingleton<GameService>, IPointerClickHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("ye");
         InputService.HandlePlayerClicked(eventData);
     }
 }

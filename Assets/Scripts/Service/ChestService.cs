@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChestService
 {
     private List<ChestScriptableObject> chestsList;
-    private Queue<ChestScriptableObject> chestsOpenQueue;
+    private Queue<ChestView> chestsOpenQueue;
     private ChestView chestPrefab;
     private int chestsLimit;
     private int numberOfChestsGenerated;
@@ -17,6 +17,7 @@ public class ChestService
         this.chestPrefab = chestPrefab;
         chestsLimit = chestServiceSO.chestLimit;
         numberOfChestsGenerated = 0;
+        chestsOpenQueue = new Queue<ChestView>();
         LoadChests();
     }
     private void LoadChests()
@@ -39,6 +40,14 @@ public class ChestService
         ChestScriptableObject chestSO = chestsList[chestType];
         CreateChest(chestSO);
     }
+
+    public void AddChestToWaitingQueue(ChestView chestView)
+    {
+        chestsOpenQueue.Enqueue(chestView);
+        if (chestsOpenQueue.Count <= 0)
+            StartUnlockingChest(chestView);
+    }
+    public void StartUnlockingChest(ChestView chestView) => chestView.controller.StateMachine.ChangeState(ChestState.UNLOCKING);
 
     private void CreateChest(ChestScriptableObject chestSO)
     {
