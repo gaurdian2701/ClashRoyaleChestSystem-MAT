@@ -19,6 +19,12 @@ public class ChestController
         CreateStateMachine();
     }
 
+    public int GetGemsToUnlock()
+    {
+        ChestTime timeLeft = timerController.GetCurrentTime();
+        return timeLeft.hours > 0 ? timeLeft.minutes * timeLeft.hours : timeLeft.minutes;
+    }
+
     public void UpdateTimeStep(float timeStep)
     {
         timerController.CountTime(timeStep);

@@ -11,7 +11,10 @@ public class ChestUnlockingState : IStateInterface
         this.controller = controller;
         waitTime = controller.ChestData.WaitTime * 60;
     }
-    public override void OnStateEnter() { }
+    public override void OnStateEnter() 
+    {
+        controller.ChestView.SetChestStateText(ChestState.UNLOCKING);
+    }
 
     public override void Update()
     {

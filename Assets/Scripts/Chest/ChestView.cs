@@ -12,10 +12,10 @@ public class ChestView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI chestStateText;
     public ChestController controller {  get; private set; }
 
-    private void Awake()
-    {
-        SetChestStateText(ChestState.LOCKED);
-    }
+    //private void Awake()
+    //{
+    //    SetChestStateText(ChestState.LOCKED);
+    //}
 
     private void Update()
     {
@@ -50,6 +50,8 @@ public class ChestView : MonoBehaviour
         {
             case ChestState.LOCKED:
                 GameService.Instance.EventService.onLockedChestClicked.Invoke(this); break;
+            case ChestState.UNLOCKING:
+                GameService.Instance.EventService.onUnlockingChestClicked.Invoke(this); break;
             default: break;
         }
     }

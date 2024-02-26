@@ -187,7 +187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &49305977
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1107,7 +1107,7 @@ GameObject:
   - component: {fileID: 785589833}
   - component: {fileID: 785589832}
   m_Layer: 5
-  m_Name: Amount
+  m_Name: GemsToUnlockText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1664,7 +1664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1660589360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2088,6 +2088,7 @@ MonoBehaviour:
   startUnlockingChestPanel: {fileID: 1660589359}
   coinsText: {fileID: 2046095724}
   gemsText: {fileID: 360004084}
+  gemsToUnlockText: {fileID: 785589832}
 --- !u!114 &1837703651
 MonoBehaviour:
   m_ObjectHideFlags: 0

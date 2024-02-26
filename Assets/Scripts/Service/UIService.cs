@@ -21,6 +21,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI coinsText;
     [SerializeField] private TextMeshProUGUI gemsText;
+    [SerializeField] private TextMeshProUGUI gemsToUnlockText;
 
 
     private ChestView currentChestClicked;
@@ -44,6 +45,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         startUnlockingChestButton.onClick.AddListener(StartChestUnlock);
         GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
+        GameService.Instance.EventService.onUnlockingChestClicked += HandleUnlockingChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked += HandleEmptyCanvasClicked;
     }
 
@@ -62,9 +64,22 @@ public class UIService : MonoBehaviour, IPointerDownHandler
 
     private void HandleLockedChestClicked(ChestView view)
     {
-        this.currentChestClicked = view;
+        SetCurrentChestClicked(view);
         ToggleStartUnlockingChestPanel(true);
     }
+    private void HandleUnlockingChestClicked(ChestView view)
+    {
+        SetCurrentChestClicked(view);
+        UpdateOpenChestPanel();
+    }
+
+    private void UpdateOpenChestPanel()
+    {
+        ToggleOpenChestPanel(true);
+        gemsToUnlockText.text = currentChestClicked.controller.GetGemsToUnlock().ToString();
+    }
+
+    private void SetCurrentChestClicked(ChestView chestView) => currentChestClicked = chestView;
     private void HandleEmptyCanvasClicked()
     {
         this.currentChestClicked = null;
