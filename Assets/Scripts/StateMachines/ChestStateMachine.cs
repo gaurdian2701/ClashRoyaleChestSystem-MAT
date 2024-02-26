@@ -13,7 +13,7 @@ public class ChestStateMachine
         states = new Dictionary<ChestState, IStateInterface> ();
         this.controller = controller;
         CreateStates();
-        currentState = states[ChestState.LOCKED];
+        currentState = states[ChestState.UNLOCKING];
     }
 
     public void Update()

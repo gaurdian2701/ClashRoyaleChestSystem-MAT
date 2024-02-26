@@ -16,23 +16,30 @@ public class ChestView : MonoBehaviour
         SetChestStateText(ChestState.LOCKED);
     }
 
+    private void Update()
+    {
+        controller.StateMachine?.Update();
+    }
+
     public void SetChestStateText(ChestState chestState) => chestStateText.text = chestState.ToString();
     public void SetChestController(ChestController controller) => this.controller = controller;
-    public void SetChestTimerText(int mins, int seconds)
+    public void UpdateChestTimerText(ChestTime timeLeft)
     {
         string minsText;
         string secondsText;
+        string hoursText;
 
-        SetAppropriateText(out minsText, mins);
-        SetAppropriateText(out secondsText, seconds);
+        SetAppropriateText(out secondsText, timeLeft.seconds);
+        SetAppropriateText(out minsText, timeLeft.minutes);
+        SetAppropriateText(out hoursText, timeLeft.hours);
 
-        timerText.text = $"{minsText} : {secondsText}";
+        timerText.text = $"{hoursText}: {minsText} : {secondsText}";
     }
 
     private void SetAppropriateText(out string text, int time) => text = time < 10 ? $"0{time}" : time.ToString();
     public void InitializeChestData()
     {
-        chestImage.sprite = controller.chestData.ChestImage;
-        SetChestTimerText(controller.chestData.WaitTime, 0);
+        chestImage.sprite = controller.ChestData.ChestImage;
+        UpdateChestTimerText(controller.GetTimeLeft());
     }
 }

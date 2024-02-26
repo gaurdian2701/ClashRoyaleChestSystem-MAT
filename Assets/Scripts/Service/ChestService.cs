@@ -35,10 +35,8 @@ public class ChestService
 
     private void CreateChest(ChestScriptableObject chestSO)
     {
-        ChestController chestController = new ChestController(chestPrefab, chestSO);
         ChestView chest = GameObject.Instantiate(chestPrefab);
-        chestPrefab.SetChestController(chestController);
-        chestPrefab.InitializeChestData();
+        ChestController chestController = new ChestController(chest, chestSO);
         GameService.Instance.EventService.onChestSetupComplete.Invoke(chest);
     }
 }
