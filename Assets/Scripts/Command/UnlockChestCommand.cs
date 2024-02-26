@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestUnlockedCommand : Command
+public class UnlockChestCommand : Command
 {
-    public ChestUnlockedCommand(CommandData commandData)
+    public UnlockChestCommand(CommandData commandData)
     {
         this.commandData = commandData; 
     }

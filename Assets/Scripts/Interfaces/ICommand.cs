@@ -10,6 +10,9 @@ public interface ICommand
 
 public struct CommandData
 {
-    public ChestView ChestView;
-    public CommandData(ChestView ChestView) => this.ChestView = ChestView;
+    public ChestView ChestView { get; private set; }
+    public int chestIndexInQueue { get; private set; }
+
+    public void SetChestView(ChestView chestView) => this.ChestView = chestView;
+    public void SetChestIndexInQueue(int index) => this.chestIndexInQueue = index;
 }

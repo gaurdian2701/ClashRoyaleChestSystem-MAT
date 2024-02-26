@@ -18,7 +18,21 @@ public class ChestUnlockingState : IStateInterface
 
     public override void Update()
     {
+        if(waitTime <= 0)
+        {
+            //COMMAND PATTERN WATERFALL
+            GameService.Instance.EventService.onChestUnlocked.Invoke(controller.ChestView);
+            //waitTime = 0;
+            //controller.UpdateTimeStep(waitTime);
+            //controller.StateMachine.ChangeState(ChestState.UNLOCKED);
+            return;
+        }
         waitTime -= Time.deltaTime;
         controller.UpdateTimeStep(waitTime);
+    }
+
+    public override void OnStateExit()
+    {
+        
     }
 }

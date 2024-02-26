@@ -15,6 +15,7 @@ public class GameService : GenericMonoSingleton<GameService>
     public InputService InputService;
     public ChestService ChestService;
     public EventService EventService;
+    public CommandService CommandService;
 
     protected override void Awake()
     {
@@ -23,5 +24,6 @@ public class GameService : GenericMonoSingleton<GameService>
         InputService = new InputService(raycaster);
         ChestService = new ChestService(chestPrefab, chestServiceSO);
         EventService = new EventService();
+        CommandService = new CommandService();
     }
 }

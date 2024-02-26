@@ -3,5 +3,6 @@ public enum ChestState
     LOCKED,
     UNLOCKING,
     UNLOCKED,
-    OPENED
+    OPENED,
+    QUEUED
 };

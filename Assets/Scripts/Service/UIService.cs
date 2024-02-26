@@ -12,6 +12,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     [Header("Buttons")]
     [SerializeField] private Button getChestButton;
     [SerializeField] private Button startUnlockingChestButton;
+    [SerializeField] private Button unlockChestWithGemsButton;
 
     [Header("Panels")]
     [SerializeField] private GameObject chestsPanel;
@@ -24,7 +25,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     [SerializeField] private TextMeshProUGUI gemsToUnlockText;
 
 
-    private ChestView currentChestClicked;
+    private ChestView currentChestSelected;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         getChestButton.onClick.AddListener(GenerateRandomChest);
         startUnlockingChestButton.onClick.AddListener(StartChestUnlock);
+        unlockChestWithGemsButton.onClick.AddListener(OpenChestWithGems);
         GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
         GameService.Instance.EventService.onUnlockingChestClicked += HandleUnlockingChestClicked;
@@ -53,6 +55,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         getChestButton.onClick.RemoveAllListeners();
         startUnlockingChestButton.onClick.RemoveAllListeners();
+        unlockChestWithGemsButton.onClick.RemoveAllListeners();
         GameService.Instance.EventService.onChestSetupComplete -= AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked -= HandleLockedChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked -= HandleEmptyCanvasClicked;
@@ -61,6 +64,12 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     private void GenerateRandomChest() => GameService.Instance.ChestService.GenerateRandomChest();
     private void ToggleOpenChestPanel(bool toggle) => openChestPanel.SetActive(toggle);
     private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
+    private void OpenChestWithGems()
+    {
+        CommandData commandData = new CommandData();
+        Command command = new UnlockChestCommand(commandData);
+        GameService.Instance.ChestService.ProcessCommand(command);
+    }
 
     private void HandleLockedChestClicked(ChestView view)
     {
@@ -76,19 +85,19 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     private void UpdateOpenChestPanel()
     {
         ToggleOpenChestPanel(true);
-        gemsToUnlockText.text = currentChestClicked.controller.GetGemsToUnlock().ToString();
+        gemsToUnlockText.text = currentChestSelected.controller.GetGemsToUnlock().ToString();
     }
 
-    private void SetCurrentChestClicked(ChestView chestView) => currentChestClicked = chestView;
+    private void SetCurrentChestClicked(ChestView chestView) => currentChestSelected = chestView;
     private void HandleEmptyCanvasClicked()
     {
-        this.currentChestClicked = null;
+        this.currentChestSelected = null;
         ToggleStartUnlockingChestPanel(false);
         ToggleOpenChestPanel(false);
     }
     private void StartChestUnlock()
     {
-        GameService.Instance.ChestService.StartUnlockingChest(currentChestClicked);
+        GameService.Instance.ChestService.AddChestToWaitingQueue(currentChestSelected);
         ToggleStartUnlockingChestPanel(false);
     }
 

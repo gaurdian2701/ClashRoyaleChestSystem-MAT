@@ -1537,7 +1537,7 @@ GameObject:
   - component: {fileID: 1480569943}
   - component: {fileID: 1480569942}
   m_Layer: 5
-  m_Name: GemsButton
+  m_Name: UnlockChestWithGemsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1587,8 +1587,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.7176471, g: 0.18431373, b: 0.18431373, a: 1}
+    m_PressedColor: {r: 0.6037736, g: 0.40852717, b: 0.2642933, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -2083,6 +2083,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getChestButton: {fileID: 2088014559}
   startUnlockingChestButton: {fileID: 1822452010}
+  unlockChestWithGemsButton: {fileID: 0}
   chestsPanel: {fileID: 251106653}
   openChestPanel: {fileID: 49305976}
   startUnlockingChestPanel: {fileID: 1660589359}

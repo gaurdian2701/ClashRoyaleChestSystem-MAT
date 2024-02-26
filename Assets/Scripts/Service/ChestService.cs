@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChestService
 {
     private List<ChestScriptableObject> chestsList;
-    private Queue<ChestView> chestsOpenQueue;
+    private List<ChestView> chestsInQueueForUnlock;
     private ChestView chestPrefab;
     private int chestsLimit;
     private int numberOfChestsGenerated;
@@ -17,7 +17,7 @@ public class ChestService
         this.chestPrefab = chestPrefab;
         chestsLimit = chestServiceSO.chestLimit;
         numberOfChestsGenerated = 0;
-        chestsOpenQueue = new Queue<ChestView>();
+        chestsInQueueForUnlock = new List<ChestView>();
         LoadChests();
     }
     private void LoadChests()
@@ -43,11 +43,23 @@ public class ChestService
 
     public void AddChestToWaitingQueue(ChestView chestView)
     {
-        chestsOpenQueue.Enqueue(chestView);
-        if (chestsOpenQueue.Count <= 0)
+        if (chestsInQueueForUnlock.Count <= 0)
             StartUnlockingChest(chestView);
+        SetChestForQueueing(chestView);
     }
-    public void StartUnlockingChest(ChestView chestView) => chestView.controller.StateMachine.ChangeState(ChestState.UNLOCKING);
+
+    public void ProcessCommand(Command command)
+    {
+        command.commandData.SetChestIndexInQueue(chestsInQueueForUnlock.IndexOf(command.commandData.ChestView));
+        GameService.Instance.CommandService.CommandInvoker.ProcessCommand(command);
+    }
+
+    private void SetChestForQueueing(ChestView chestView)
+    {
+        chestsInQueueForUnlock.Add(chestView);
+        chestView.SetChestStateText(ChestState.QUEUED);
+    }
+    private void StartUnlockingChest(ChestView chestView) => chestView.controller.StateMachine.ChangeState(ChestState.UNLOCKING);
 
     private void CreateChest(ChestScriptableObject chestSO)
     {

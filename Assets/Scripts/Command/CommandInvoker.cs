@@ -8,6 +8,7 @@ public class CommandInvoker
 
     public CommandInvoker() => commandsList = new Stack<Command>();
 
+    public void ProcessCommand(Command command) => ExecuteCommand(command);
     public void ExecuteCommand(Command command)
     {
         command.Execute();

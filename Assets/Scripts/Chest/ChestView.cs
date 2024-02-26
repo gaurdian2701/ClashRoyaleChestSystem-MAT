@@ -12,11 +12,6 @@ public class ChestView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI chestStateText;
     public ChestController controller {  get; private set; }
 
-    //private void Awake()
-    //{
-    //    SetChestStateText(ChestState.LOCKED);
-    //}
-
     private void Update()
     {
         controller.StateMachine?.Update();
