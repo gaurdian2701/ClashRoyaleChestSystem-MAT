@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CommandInvoker
 {
-    private Stack<ICommand> commandsList;
+    private Stack<Command> commandsList;
 
-    public CommandInvoker() => commandsList = new Stack<ICommand>();
+    public CommandInvoker() => commandsList = new Stack<Command>();
 
-    public void ExecuteCommand(ICommand command)
+    public void ExecuteCommand(Command command)
     {
         command.Execute();
         commandsList.Push(command);

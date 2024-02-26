@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,11 @@ using UnityEngine;
 public class ChestService
 {
     private List<ChestScriptableObject> chestsList;
+    private Queue<ChestScriptableObject> chestsOpenQueue;
     private ChestView chestPrefab;
     private int chestsLimit;
     private int numberOfChestsGenerated;
+    private System.Random random;
 
     public ChestService(ChestView chestPrefab, ChestServiceScriptableObject chestServiceSO)
     {
@@ -21,6 +24,7 @@ public class ChestService
         ChestScriptableObject[] cList;
         cList = Resources.LoadAll<ChestScriptableObject>("Chests");
         chestsList = new List<ChestScriptableObject>(cList);
+        chestsList.Sort((x,y) => x.ChestRarity.CompareTo(y.ChestRarity));
     }
     public void GenerateRandomChest()
     {
@@ -28,7 +32,10 @@ public class ChestService
             return;
 
         numberOfChestsGenerated++;
-        int chestType = UnityEngine.Random.Range((int)ChestType.Common, (int)ChestType.Legendary);
+        random = new System.Random();
+
+        int chestType = random.Next((int)ChestRarity.Common, (int)ChestRarity.Legendary);
+
         ChestScriptableObject chestSO = chestsList[chestType];
         CreateChest(chestSO);
     }

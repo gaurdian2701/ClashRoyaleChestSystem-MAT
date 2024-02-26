@@ -23,7 +23,7 @@ public class ChestView : MonoBehaviour
 
     public void SetChestStateText(ChestState chestState) => chestStateText.text = chestState.ToString();
     public void SetChestController(ChestController controller) => this.controller = controller;
-    public void UpdateChestTimerText(ChestTime timeLeft)
+    public void UpdateChestTimerText(ChestTime timeLeft) //Updates the time shown as text in the UI
     {
         string minsText;
         string secondsText;
@@ -37,7 +37,7 @@ public class ChestView : MonoBehaviour
     }
 
     private void SetAppropriateText(out string text, int time) => text = time < 10 ? $"0{time}" : time.ToString();
-    public void InitializeChestData()
+    public void InitializeChestData() //Sets the image and time to unlock when the chest is locked
     {
         chestImage.sprite = controller.ChestData.ChestImage;
         UpdateChestTimerText(controller.GetTimeLeft());

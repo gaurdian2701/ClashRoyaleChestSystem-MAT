@@ -13,4 +13,3 @@ public struct CommandData
     public ChestView ChestView;
     public CommandData(ChestView ChestView) => this.ChestView = ChestView;
 }
-

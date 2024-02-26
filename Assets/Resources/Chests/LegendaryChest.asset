@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f080dc8ce5bed7e48baa8036a06e5a23, type: 3}
   m_Name: LegendaryChest
   m_EditorClassIdentifier: 
-  ChestType: 3
+  ChestRarity: 3
   ChestImage: {fileID: 642395269, guid: c3d8506b5baf8c2449f501c3c3287075, type: 3}
   LowerCoinLimit: 100
   UpperCoinLimit: 1200
