@@ -71,7 +71,11 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         ToggleStartUnlockingChestPanel(false);
         ToggleOpenChestPanel(false);
     }
-    private void StartChestUnlock() => GameService.Instance.ChestService.StartUnlockingChest(currentChestClicked);
+    private void StartChestUnlock()
+    {
+        GameService.Instance.ChestService.StartUnlockingChest(currentChestClicked);
+        ToggleStartUnlockingChestPanel(false);
+    }
 
     public void AddChestToUI(ChestView chest) => chest.transform.SetParent(chestsPanel.transform);
     public void UpdateCurrency(int coins, int gems) { coinsText.text = coins.ToString(); gemsText.text = gems.ToString(); }
