@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GameService : GenericMonoSingleton<GameService>, IPointerClickHandler
+public class GameService : GenericMonoSingleton<GameService>
 {
     [Header("CHEST DATA")]
     [SerializeField] private ChestView chestPrefab;
@@ -23,11 +23,5 @@ public class GameService : GenericMonoSingleton<GameService>, IPointerClickHandl
         InputService = new InputService(raycaster);
         ChestService = new ChestService(chestPrefab, chestServiceSO);
         EventService = new EventService();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log("ye");
-        InputService.HandlePlayerClicked(eventData);
     }
 }

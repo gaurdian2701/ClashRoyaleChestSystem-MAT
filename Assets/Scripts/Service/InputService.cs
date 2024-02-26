@@ -14,7 +14,6 @@ public class InputService
         this.raycaster = raycaster; 
         raycastResult = new List<RaycastResult>();
     }
-
     public void HandlePlayerClicked(PointerEventData eventData)
     {
         raycaster.Raycast(eventData, raycastResult);

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIService : MonoBehaviour
+public class UIService : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private Button getChestButton;
     [SerializeField] private GameObject chestsPanel;
@@ -30,4 +30,9 @@ public class UIService : MonoBehaviour
 
     public void AddChestToUI(ChestView chest) => chest.transform.SetParent(chestsPanel.transform);
     public void UpdateCurrency(int coins, int gems) { coinsText.text = coins.ToString(); gemsText.text = gems.ToString(); }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        GameService.Instance.InputService.HandlePlayerClicked(eventData);
+    }
 }
