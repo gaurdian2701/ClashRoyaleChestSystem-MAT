@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -41,5 +42,15 @@ public class ChestView : MonoBehaviour
     {
         chestImage.sprite = controller.ChestData.ChestImage;
         UpdateChestTimerText(controller.GetTimeLeft());
+    }
+
+    public void HandleOnClickEvent()
+    {
+        switch(controller.StateMachine.ChestState)
+        {
+            case ChestState.LOCKED:
+                GameService.Instance.EventService.onLockedChestClicked.Invoke(this); break;
+            default: break;
+        }
     }
 }

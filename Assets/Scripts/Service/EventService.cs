@@ -6,4 +6,6 @@ using UnityEngine;
 public class EventService
 {
     public Action<ChestView> onChestSetupComplete;
+    public Action<ChestView> onLockedChestClicked;
+    public Action onEmptyCanvasClicked;
 }

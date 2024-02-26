@@ -7,7 +7,8 @@ public class ChestStateMachine
 {
     private Dictionary<ChestState, IStateInterface> states;
     private ChestController controller;
-    private IStateInterface currentState;
+    public IStateInterface CurrentState { get; private set; }
+    public ChestState ChestState { get; private set; }
     public ChestStateMachine(ChestController controller)
     {
         states = new Dictionary<ChestState, IStateInterface> ();
@@ -18,14 +19,15 @@ public class ChestStateMachine
 
     public void Update()
     {
-        currentState?.Update();
+        CurrentState?.Update();
     }
 
     public void ChangeState(ChestState state)
     {
-        currentState?.OnStateExit();
-        currentState = states[state];
-        currentState?.OnStateEnter();
+        CurrentState?.OnStateExit();
+        CurrentState = states[state];
+        ChestState = state;
+        CurrentState?.OnStateEnter();
     }
 
     private void CreateStates()

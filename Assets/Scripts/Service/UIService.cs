@@ -9,24 +9,69 @@ using UnityEngine.UI;
 
 public class UIService : MonoBehaviour, IPointerDownHandler
 {
+    [Header("Buttons")]
     [SerializeField] private Button getChestButton;
+    [SerializeField] private Button startUnlockingChestButton;
+
+    [Header("Panels")]
     [SerializeField] private GameObject chestsPanel;
+    [SerializeField] private GameObject openChestPanel;
+    [SerializeField] private GameObject startUnlockingChestPanel;
+
+    [Header("Text")]
     [SerializeField] private TextMeshProUGUI coinsText;
     [SerializeField] private TextMeshProUGUI gemsText;
 
+
+    private ChestView currentChestClicked;
+
     private void Awake()
     {
-        getChestButton.onClick.AddListener(GenerateRandomChest);
+        SubscribeToEvents();
+        ToggleOpenChestPanel(false);
+        ToggleStartUnlockingChestPanel(false);
         UpdateCurrency(0, 0);
-        GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
     }
 
     private void OnDestroy()
     {
+        UnsubscribeFromEvents();
+    }
+
+    private void SubscribeToEvents()
+    {
+        getChestButton.onClick.AddListener(GenerateRandomChest);
+        startUnlockingChestButton.onClick.AddListener(StartChestUnlock);
+        GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
+        GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
+        GameService.Instance.EventService.onEmptyCanvasClicked += HandleEmptyCanvasClicked;
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        getChestButton.onClick.RemoveAllListeners();
+        startUnlockingChestButton.onClick.RemoveAllListeners();
         GameService.Instance.EventService.onChestSetupComplete -= AddChestToUI;
+        GameService.Instance.EventService.onLockedChestClicked -= HandleLockedChestClicked;
+        GameService.Instance.EventService.onEmptyCanvasClicked -= HandleEmptyCanvasClicked;
     }
 
     private void GenerateRandomChest() => GameService.Instance.ChestService.GenerateRandomChest();
+    private void ToggleOpenChestPanel(bool toggle) => openChestPanel.SetActive(toggle);
+    private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
+
+    private void HandleLockedChestClicked(ChestView view)
+    {
+        this.currentChestClicked = view;
+        ToggleStartUnlockingChestPanel(true);
+    }
+    private void HandleEmptyCanvasClicked()
+    {
+        this.currentChestClicked = null;
+        ToggleStartUnlockingChestPanel(false);
+        ToggleOpenChestPanel(false);
+    }
+    private void StartChestUnlock() => GameService.Instance.ChestService.StartUnlockingChest(currentChestClicked);
 
     public void AddChestToUI(ChestView chest) => chest.transform.SetParent(chestsPanel.transform);
     public void UpdateCurrency(int coins, int gems) { coinsText.text = coins.ToString(); gemsText.text = gems.ToString(); }
