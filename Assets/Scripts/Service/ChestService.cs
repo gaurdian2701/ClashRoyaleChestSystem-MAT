@@ -49,15 +49,10 @@ public class ChestService
     public void AddChestToWaitingQueue(ChestView chestView)
     {
         if (chestsInQueueForUnlock.Count <= 0)
-        {
-            GameService.Instance.EventService.onStartUnlockingChestSuccessful?.Invoke();
-            StartUnlockingChest(chestView);
-        }
+            HandleChestUnlocking(chestView);
         else
-        {
-            SetChestStateForQueueing(chestView);
-            GameService.Instance.EventService.onStartUnlockingChestFailed?.Invoke();
-        }
+            HandleChestQueueing(chestView);
+
         chestsInQueueForUnlock.Add(chestView);
     }
 
@@ -66,6 +61,31 @@ public class ChestService
         command.commandData.SetChestIndexInQueue(chestsInQueueForUnlock.IndexOf(command.commandData.ChestView));
         ChestView chestInCommand = chestsInQueueForUnlock.ElementAt(command.commandData.chestIndexInQueue);
         chestInCommand.ProcessCommand(command);
+    }
+
+    public void ProcessUndo(ChestView chestView, int index)
+    {
+        chestsInQueueForUnlock.Insert(index, chestView);
+        HandleChestUnlocking(chestView);
+
+        foreach(ChestView c in chestsInQueueForUnlock)
+            if(c != chestView)
+                HandleChestQueueing(c);
+    }
+
+    private void HandleChestUnlocking(ChestView chestView)
+    {
+        GameService.Instance.EventService.onStartUnlockingChestSuccessful?.Invoke();
+        StartUnlockingChest(chestView);
+    }
+
+    private void HandleChestQueueing(ChestView chestView)
+    {
+        if (chestView.controller.StateMachine.ChestState == ChestState.UNLOCKING)
+            return;
+
+        SetChestStateForQueueing(chestView);
+        GameService.Instance.EventService.onStartUnlockingChestFailed?.Invoke();
     }
     private void RemoveChestFromQueue(ChestView chest)
     {
@@ -77,8 +97,7 @@ public class ChestService
         if(chestsInQueueForUnlock.Any())
             StartUnlockingChest(chestsInQueueForUnlock[0]);
     }
-
-    private void SetChestStateForQueueing(ChestView chestView) => chestView.SetChestStateText(ChestState.QUEUED);
+    private void SetChestStateForQueueing(ChestView chestView) => chestView.OnChestQueued();
     private void StartUnlockingChest(ChestView chestView) => chestView.controller.StateMachine.ChangeState(ChestState.UNLOCKING);
 
     private void CreateChest(ChestScriptableObject chestSO)

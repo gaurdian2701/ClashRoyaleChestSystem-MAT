@@ -16,6 +16,12 @@ public class UnlockChestCommand : Command
 
     public override void Undo()
     {
-        
+        GameService.Instance.ChestService.ProcessUndo(commandData.ChestView, commandData.chestIndexInQueue);
+        UpdateChestInfo();
+    }
+
+    private void UpdateChestInfo()
+    {
+        commandData.ChestView.controller.StateMachine.SetTimeStep(commandData.chestTimeStepDuringUnlock);
     }
 }

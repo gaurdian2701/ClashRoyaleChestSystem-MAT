@@ -5,11 +5,11 @@ using UnityEngine;
 public class ChestUnlockingState : IStateInterface
 {
     private ChestController controller;
-    private float waitTime;
+    public float waitTime { get; private set; }
     public ChestUnlockingState(ChestController controller) 
     {
         this.controller = controller;
-        waitTime = controller.ChestData.WaitTime * 60;
+        SetTimeStep(controller.ChestData.WaitTime * 60);
     }
     public override void OnStateEnter() 
     {
@@ -34,4 +34,5 @@ public class ChestUnlockingState : IStateInterface
         waitTime = 0;
         controller.UpdateTimeStep(waitTime);
     }
+    public void SetTimeStep(float timeStep) => waitTime = timeStep;
 }

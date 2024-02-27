@@ -14,6 +14,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Button getChestButton;
     [SerializeField] private Button startUnlockingChestButton;
     [SerializeField] private Button unlockChestWithGemsButton;
+    [SerializeField] private Button undoButton;
 
     [Header("Panels")]
     [SerializeField] private GameObject chestsPanel;
@@ -48,12 +49,14 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         getChestButton.onClick.AddListener(GenerateRandomChest);
         startUnlockingChestButton.onClick.AddListener(StartChestUnlock);
         unlockChestWithGemsButton.onClick.AddListener(OpenChestWithGems);
+        undoButton.onClick.AddListener(InitiateUndoFunctionality);
         GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
         GameService.Instance.EventService.onUnlockingChestClicked += HandleUnlockingChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked += HandleEmptyCanvasClicked;
         GameService.Instance.EventService.onStartUnlockingChestSuccessful += HandleChestUnlockingSuccessful;
         GameService.Instance.EventService.onStartUnlockingChestFailed += HandleChestUnlockingFailed;
+        GameService.Instance.EventService.onChestUnlocked += HandleChestUnlocked;
        
     }
 
@@ -62,11 +65,13 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         getChestButton.onClick.RemoveAllListeners();
         startUnlockingChestButton.onClick.RemoveAllListeners();
         unlockChestWithGemsButton.onClick.RemoveAllListeners();
+        undoButton.onClick.RemoveAllListeners();
         GameService.Instance.EventService.onChestSetupComplete -= AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked -= HandleLockedChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked -= HandleEmptyCanvasClicked;
         GameService.Instance.EventService.onStartUnlockingChestSuccessful -= HandleChestUnlockingSuccessful;
         GameService.Instance.EventService.onStartUnlockingChestFailed -= HandleChestUnlockingFailed;
+        GameService.Instance.EventService.onChestUnlocked -= HandleChestUnlocked;
     }
 
     private void InitializeTexts()
@@ -90,14 +95,21 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         yield return new WaitForSecondsRealtime(3f);
         popUpInfoText.text = null;
     }
+    private void HandleChestUnlocked(ChestView view) => ShowPopUpInfo("CHEST UNLOCKED");
     private void HandleChestUnlockingSuccessful() => ShowPopUpInfo("STARTED UNLOCKING CHEST");
     private void HandleChestUnlockingFailed() => ShowPopUpInfo("CHEST IS QUEUED");
     private void GenerateRandomChest() => GameService.Instance.ChestService.GenerateRandomChest();
     private void ToggleOpenChestPanel(bool toggle) => openChestPanel.SetActive(toggle);
     private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
+    private void ToggleUndoButton(bool toggle) => undoButton.gameObject.SetActive(toggle);
+    private void InitiateUndoFunctionality()
+    {
+        GameService.Instance.CommandService.CommandInvoker.UndoCommand();
+    }
     private void OpenChestWithGems()
     {
         ToggleOpenChestPanel(false);
+        ToggleUndoButton(true);
         CommandData commandData = new CommandData();
         commandData.SetChestView(currentChestSelected);
         Command command = new UnlockChestCommand(commandData);

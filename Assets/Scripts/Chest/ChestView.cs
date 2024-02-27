@@ -38,7 +38,11 @@ public class ChestView : MonoBehaviour
         chestImage.sprite = controller.ChestData.ChestImage;
         UpdateChestTimerText(controller.GetTimeLeft());
     }
-
+    public void OnChestQueued()
+    {
+        controller.StateMachine.ChangeState(ChestState.LOCKED);
+        SetChestStateText(ChestState.QUEUED);
+    }
     public void HandleOnClickEvent()
     {
         switch(controller.StateMachine.ChestState)
@@ -53,7 +57,7 @@ public class ChestView : MonoBehaviour
 
     public void ProcessCommand(Command command)
     {
-        command.commandData.SetChestTime(controller.GetTimeLeft());
+        command.commandData.SetChestTimeStep(controller.GetTimeStep());
         GameService.Instance.CommandService.CommandInvoker.ProcessCommand(command);
     }
 }

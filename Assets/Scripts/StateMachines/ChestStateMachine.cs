@@ -30,6 +30,8 @@ public class ChestStateMachine
         CurrentState?.OnStateEnter();
     }
 
+    public void SetTimeStep(float timeStep) => (CurrentState as ChestUnlockingState).SetTimeStep(timeStep);
+
     private void CreateStates()
     {
         states.Add(ChestState.LOCKED, new ChestLockedState(controller));

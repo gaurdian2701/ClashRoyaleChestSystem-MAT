@@ -25,6 +25,8 @@ public class ChestController
         return timeLeft.hours > 0 ? timeLeft.minutes * timeLeft.hours : timeLeft.minutes;
     }
 
+    public float GetTimeStep() => (StateMachine.CurrentState as ChestUnlockingState).waitTime;
+    public void SetTimeStep(float timeStep) => (StateMachine.CurrentState as ChestUnlockingState).SetTimeStep(timeStep);
     public void UpdateTimeStep(float timeStep)
     {
         timerController.CountTime(timeStep);

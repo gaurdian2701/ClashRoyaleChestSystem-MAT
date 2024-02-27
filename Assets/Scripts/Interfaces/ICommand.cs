@@ -12,10 +12,9 @@ public struct CommandData
 {
     public ChestView ChestView { get; private set; }
     public int chestIndexInQueue { get; private set; }
-    public ChestTime timeDuringUnlock { get; private set; }
+    public float chestTimeStepDuringUnlock;
 
     public void SetChestView(ChestView chestView) => this.ChestView = chestView;
     public void SetChestIndexInQueue(int index) => this.chestIndexInQueue = index;
-
-    public void SetChestTime(ChestTime chestTime) => this.timeDuringUnlock = chestTime;
+    public void SetChestTimeStep(float timeStep) => this.chestTimeStepDuringUnlock = timeStep;
 }
