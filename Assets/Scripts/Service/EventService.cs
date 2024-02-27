@@ -10,4 +10,6 @@ public class EventService
     public Action<ChestView> onUnlockingChestClicked;
     public Action<ChestView> onChestUnlocked;
     public Action onEmptyCanvasClicked;
+    public Action onStartUnlockingChestSuccessful;
+    public Action onStartUnlockingChestFailed;
 }

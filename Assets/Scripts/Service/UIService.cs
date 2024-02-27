@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     [SerializeField] private TextMeshProUGUI coinsText;
     [SerializeField] private TextMeshProUGUI gemsText;
     [SerializeField] private TextMeshProUGUI gemsToUnlockText;
+    [SerializeField] private TextMeshProUGUI popUpInfoText;
 
 
     private ChestView currentChestSelected;
@@ -30,6 +32,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     private void Awake()
     {
         SubscribeToEvents();
+        InitializeTexts();
         ToggleOpenChestPanel(false);
         ToggleStartUnlockingChestPanel(false);
         UpdateCurrency(0, 0);
@@ -49,6 +52,9 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
         GameService.Instance.EventService.onUnlockingChestClicked += HandleUnlockingChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked += HandleEmptyCanvasClicked;
+        GameService.Instance.EventService.onStartUnlockingChestSuccessful += HandleChestUnlockingSuccessful;
+        GameService.Instance.EventService.onStartUnlockingChestFailed += HandleChestUnlockingFailed;
+       
     }
 
     private void UnsubscribeFromEvents()
@@ -59,8 +65,33 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         GameService.Instance.EventService.onChestSetupComplete -= AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked -= HandleLockedChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked -= HandleEmptyCanvasClicked;
+        GameService.Instance.EventService.onStartUnlockingChestSuccessful -= HandleChestUnlockingSuccessful;
+        GameService.Instance.EventService.onStartUnlockingChestFailed -= HandleChestUnlockingFailed;
     }
 
+    private void InitializeTexts()
+    {
+        coinsText.text = null;
+        gemsText.text = null;
+        popUpInfoText.text = null;
+    }
+
+    private void ShowPopUpInfo(string text)
+    {
+        if (popUpInfoText.text != null)
+            return;
+
+        popUpInfoText.text = text;
+        StartCoroutine(nameof(PopUpInfoCooldown));
+    }
+
+    private IEnumerator PopUpInfoCooldown()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        popUpInfoText.text = null;
+    }
+    private void HandleChestUnlockingSuccessful() => ShowPopUpInfo("STARTED UNLOCKING CHEST");
+    private void HandleChestUnlockingFailed() => ShowPopUpInfo("CHEST IS QUEUED");
     private void GenerateRandomChest() => GameService.Instance.ChestService.GenerateRandomChest();
     private void ToggleOpenChestPanel(bool toggle) => openChestPanel.SetActive(toggle);
     private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
@@ -100,12 +131,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         GameService.Instance.ChestService.AddChestToWaitingQueue(currentChestSelected);
         ToggleStartUnlockingChestPanel(false);
     }
-
     public void AddChestToUI(ChestView chest) => chest.transform.SetParent(chestsPanel.transform);
     public void UpdateCurrency(int coins, int gems) { coinsText.text = coins.ToString(); gemsText.text = gems.ToString(); }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        GameService.Instance.InputService.HandlePlayerClicked(eventData);
-    }
+    public void OnPointerDown(PointerEventData eventData) => GameService.Instance.InputService.HandlePlayerClicked(eventData);
 }

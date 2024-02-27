@@ -44,8 +44,16 @@ public class ChestService
     public void AddChestToWaitingQueue(ChestView chestView)
     {
         if (chestsInQueueForUnlock.Count <= 0)
+        {
+            GameService.Instance.EventService.onStartUnlockingChestSuccessful?.Invoke();
             StartUnlockingChest(chestView);
-        SetChestForQueueing(chestView);
+        }
+        else
+        {
+            SetChestStateForQueueing(chestView);
+            GameService.Instance.EventService.onStartUnlockingChestFailed?.Invoke();
+        }
+        chestsInQueueForUnlock.Add(chestView);
     }
 
     public void ProcessCommand(Command command)
@@ -54,11 +62,7 @@ public class ChestService
         GameService.Instance.CommandService.CommandInvoker.ProcessCommand(command);
     }
 
-    private void SetChestForQueueing(ChestView chestView)
-    {
-        chestsInQueueForUnlock.Add(chestView);
-        chestView.SetChestStateText(ChestState.QUEUED);
-    }
+    private void SetChestStateForQueueing(ChestView chestView) => chestView.SetChestStateText(ChestState.QUEUED);
     private void StartUnlockingChest(ChestView chestView) => chestView.controller.StateMachine.ChangeState(ChestState.UNLOCKING);
 
     private void CreateChest(ChestScriptableObject chestSO)
