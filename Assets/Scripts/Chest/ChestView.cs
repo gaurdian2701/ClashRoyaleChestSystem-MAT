@@ -12,6 +12,9 @@ public class ChestView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI chestStateText;
     public ChestController controller {  get; private set; }
 
+    public int coinsReward { get; private set; }
+    public int gemsReward {  get; private set; }
+
     private void Update()
     {
         controller.StateMachine?.Update();
@@ -33,6 +36,8 @@ public class ChestView : MonoBehaviour
     }
 
     private void SetAppropriateText(out string text, int time) => text = time < 10 ? $"0{time}" : time.ToString();
+
+    public void SetRewards(int coins, int gems) { coinsReward = coins; gemsReward = gems; }
     public void InitializeChestData() //Sets the image and time to unlock when the chest is locked
     {
         chestImage.sprite = controller.ChestData.ChestImage;
@@ -51,6 +56,8 @@ public class ChestView : MonoBehaviour
                 GameService.Instance.EventService.onLockedChestClicked.Invoke(this); break;
             case ChestState.UNLOCKING:
                 GameService.Instance.EventService.onUnlockingChestClicked.Invoke(this); break;
+            case ChestState.UNLOCKED:
+                GameService.Instance.EventService.onUnlockedChestClicked.Invoke(this); break;
             default: break;
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ public class CommandInvoker
 
     public CommandInvoker() => commandStack = new Stack<Command>();
 
+    public void Init() => GameService.Instance.EventService.onChestOpened += RemoveCommandAssociatedWithChestUnlock;
+
     public void ProcessCommand(Command command) => ExecuteCommand(command);
     public void ExecuteCommand(Command command)
     {
@@ -17,7 +20,14 @@ public class CommandInvoker
     }
     public void UndoCommand()
     {
-        if (commandStack.Any())
+        if (commandStack.Count > 0)
+        {
+            while(commandStack.Peek().commandData.ChestView == null)
+                commandStack.Pop();
             commandStack.Pop().Undo();
+        }
+    }
+    private void RemoveCommandAssociatedWithChestUnlock(ChestView view)
+    {
     }
 }

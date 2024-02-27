@@ -59,7 +59,7 @@ public class ChestService
     public void ProcessCommand(Command command)
     {
         command.commandData.SetChestIndexInQueue(chestsInQueueForUnlock.IndexOf(command.commandData.ChestView));
-        ChestView chestInCommand = chestsInQueueForUnlock.ElementAt(command.commandData.chestIndexInQueue);
+        ChestView chestInCommand = chestsInQueueForUnlock.Find((x) => x == command.commandData.ChestView);
         chestInCommand.ProcessCommand(command);
     }
 
@@ -81,14 +81,13 @@ public class ChestService
 
     private void HandleChestQueueing(ChestView chestView)
     {
-        if (chestView.controller.StateMachine.ChestState == ChestState.UNLOCKING)
-            return;
-
-        SetChestStateForQueueing(chestView);
         GameService.Instance.EventService.onStartUnlockingChestFailed?.Invoke();
+        SetChestStateForQueueing(chestView);
     }
     private void RemoveChestFromQueue(ChestView chest)
     {
+        //foreach (ChestView c in chestsInQueueForUnlock) { Debug.Log(c.gameObject.name); }
+
         if (chestsInQueueForUnlock[0] != chest)
             throw new Exception("Chest unlocked does not match with queue front!");
 
@@ -103,6 +102,7 @@ public class ChestService
     private void CreateChest(ChestScriptableObject chestSO)
     {
         ChestView chest = GameObject.Instantiate(chestPrefab);
+        chest.gameObject.name = chestSO.name;
         ChestController chestController = new ChestController(chest, chestSO);
         GameService.Instance.EventService.onChestSetupComplete.Invoke(chest);
     }

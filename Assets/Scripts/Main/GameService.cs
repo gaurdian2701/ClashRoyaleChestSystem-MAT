@@ -32,5 +32,9 @@ public class GameService : GenericMonoSingleton<GameService>
         CurrencyService = new CurrencyService(currencyServiceSO);
     }
 
-    private void Start() => CurrencyService.Init();
+    private void Start()
+    {
+        CurrencyService.Init();
+        CommandService.Init();
+    }
 }
