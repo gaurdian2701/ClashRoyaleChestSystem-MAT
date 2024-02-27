@@ -21,9 +21,9 @@ public class GameService : GenericMonoSingleton<GameService>
     {
         base.Awake();
 
+        EventService = new EventService();
         InputService = new InputService(raycaster);
         ChestService = new ChestService(chestPrefab, chestServiceSO);
-        EventService = new EventService();
         CommandService = new CommandService();
     }
 }

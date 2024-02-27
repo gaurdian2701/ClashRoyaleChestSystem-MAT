@@ -10,7 +10,8 @@ public class UnlockChestCommand : Command
     }
     public override void Execute()
     {
-        
+        ChestView chestInCommand = commandData.ChestView;
+        chestInCommand.controller.StateMachine.ChangeState(ChestState.UNLOCKED);
     }
 
     public override void Undo()

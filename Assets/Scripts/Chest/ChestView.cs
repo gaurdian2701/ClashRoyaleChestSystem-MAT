@@ -50,4 +50,10 @@ public class ChestView : MonoBehaviour
             default: break;
         }
     }
+
+    public void ProcessCommand(Command command)
+    {
+        command.commandData.SetChestTime(controller.GetTimeLeft());
+        GameService.Instance.CommandService.CommandInvoker.ProcessCommand(command);
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ChestService
@@ -19,7 +20,11 @@ public class ChestService
         numberOfChestsGenerated = 0;
         chestsInQueueForUnlock = new List<ChestView>();
         LoadChests();
+
+        GameService.Instance.EventService.onChestUnlocked += RemoveChestFromQueue;
     }
+
+    ~ChestService() { GameService.Instance.EventService.onChestUnlocked -= RemoveChestFromQueue; }
     private void LoadChests()
     {
         ChestScriptableObject[] cList;
@@ -59,7 +64,18 @@ public class ChestService
     public void ProcessCommand(Command command)
     {
         command.commandData.SetChestIndexInQueue(chestsInQueueForUnlock.IndexOf(command.commandData.ChestView));
-        GameService.Instance.CommandService.CommandInvoker.ProcessCommand(command);
+        ChestView chestInCommand = chestsInQueueForUnlock.ElementAt(command.commandData.chestIndexInQueue);
+        chestInCommand.ProcessCommand(command);
+    }
+    private void RemoveChestFromQueue(ChestView chest)
+    {
+        if (chestsInQueueForUnlock[0] != chest)
+            throw new Exception("Chest unlocked does not match with queue front!");
+
+        chestsInQueueForUnlock.RemoveAt(0);
+
+        if(chestsInQueueForUnlock.Any())
+            StartUnlockingChest(chestsInQueueForUnlock[0]);
     }
 
     private void SetChestStateForQueueing(ChestView chestView) => chestView.SetChestStateText(ChestState.QUEUED);

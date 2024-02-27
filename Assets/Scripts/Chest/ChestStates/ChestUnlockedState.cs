@@ -8,5 +8,7 @@ public class ChestUnlockedState : IStateInterface
     public ChestUnlockedState(ChestController controller) { this.controller = controller; }
     public override void OnStateEnter()
     {
+        controller.ChestView.SetChestStateText(ChestState.UNLOCKED);
+        //Do rewards
     }
 }

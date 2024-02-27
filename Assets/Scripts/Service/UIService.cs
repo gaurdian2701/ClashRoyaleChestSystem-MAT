@@ -97,7 +97,9 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
     private void OpenChestWithGems()
     {
+        ToggleOpenChestPanel(false);
         CommandData commandData = new CommandData();
+        commandData.SetChestView(currentChestSelected);
         Command command = new UnlockChestCommand(commandData);
         GameService.Instance.ChestService.ProcessCommand(command);
     }

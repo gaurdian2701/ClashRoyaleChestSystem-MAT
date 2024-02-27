@@ -18,21 +18,20 @@ public class ChestUnlockingState : IStateInterface
 
     public override void Update()
     {
-        if(waitTime <= 0)
+        if (waitTime <= 0) //This happens for when the chest unlocks on its own without using any gems
         {
-            //COMMAND PATTERN WATERFALL
-            GameService.Instance.EventService.onChestUnlocked.Invoke(controller.ChestView);
-            //waitTime = 0;
-            //controller.UpdateTimeStep(waitTime);
-            //controller.StateMachine.ChangeState(ChestState.UNLOCKED);
+            controller.StateMachine.ChangeState(ChestState.UNLOCKED);
             return;
         }
+
         waitTime -= Time.deltaTime;
         controller.UpdateTimeStep(waitTime);
     }
 
     public override void OnStateExit()
     {
-        
+        GameService.Instance.EventService.onChestUnlocked.Invoke(controller.ChestView);
+        waitTime = 0;
+        controller.UpdateTimeStep(waitTime);
     }
 }
