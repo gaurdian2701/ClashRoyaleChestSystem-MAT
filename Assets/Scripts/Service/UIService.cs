@@ -36,7 +36,6 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         InitializeTexts();
         ToggleOpenChestPanel(false);
         ToggleStartUnlockingChestPanel(false);
-        UpdateCurrency(0, 0);
     }
 
     private void OnDestroy()
@@ -57,6 +56,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         GameService.Instance.EventService.onStartUnlockingChestSuccessful += HandleChestUnlockingSuccessful;
         GameService.Instance.EventService.onStartUnlockingChestFailed += HandleChestUnlockingFailed;
         GameService.Instance.EventService.onChestUnlocked += HandleChestUnlocked;
+        GameService.Instance.EventService.onCurrencyUpdated += UpdateCurrency;
        
     }
 
@@ -72,6 +72,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         GameService.Instance.EventService.onStartUnlockingChestSuccessful -= HandleChestUnlockingSuccessful;
         GameService.Instance.EventService.onStartUnlockingChestFailed -= HandleChestUnlockingFailed;
         GameService.Instance.EventService.onChestUnlocked -= HandleChestUnlocked;
+        GameService.Instance.EventService.onCurrencyUpdated -= UpdateCurrency;
     }
 
     private void InitializeTexts()
@@ -108,14 +109,28 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     }
     private void OpenChestWithGems()
     {
+        int gems = currentChestSelected.controller.GetGemsToUnlock();
+        if (!GameService.Instance.CurrencyService.HasEnoughGems(gems))
+        {
+            ShowPopUpInfo("NOT ENOUGH GEMS");
+            return;
+        }
+
+        GameService.Instance.CurrencyService.AdjustGems(-gems);
         ToggleOpenChestPanel(false);
         ToggleUndoButton(true);
-        CommandData commandData = new CommandData();
-        commandData.SetChestView(currentChestSelected);
+        CommandData commandData = CreateCommandData(gems);
         Command command = new UnlockChestCommand(commandData);
         GameService.Instance.ChestService.ProcessCommand(command);
     }
 
+    private CommandData CreateCommandData(int gems)
+    {
+        CommandData commandData = new CommandData();
+        commandData.SetChestView(currentChestSelected);
+        commandData.SetGemsLost(gems);
+        return commandData;
+    }
     private void HandleLockedChestClicked(ChestView view)
     {
         SetCurrentChestClicked(view);

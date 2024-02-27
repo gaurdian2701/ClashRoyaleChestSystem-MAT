@@ -17,6 +17,7 @@ public class UnlockChestCommand : Command
     public override void Undo()
     {
         GameService.Instance.ChestService.ProcessUndo(commandData.ChestView, commandData.chestIndexInQueue);
+        GameService.Instance.CurrencyService.AdjustGems(commandData.gemsLost);
         UpdateChestInfo();
     }
 

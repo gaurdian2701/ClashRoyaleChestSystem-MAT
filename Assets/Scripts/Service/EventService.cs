@@ -12,4 +12,5 @@ public class EventService
     public Action onEmptyCanvasClicked;
     public Action onStartUnlockingChestSuccessful;
     public Action onStartUnlockingChestFailed;
+    public Action<int, int> onCurrencyUpdated;
 }

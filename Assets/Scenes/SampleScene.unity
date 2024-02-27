@@ -167,8 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b61a1f613e32eb74c95a4f6a177d8718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestPrefab: {fileID: 2288418893976076317, guid: 51f9f45a6087fb046acffbd39470fe63, type: 3}
   chestServiceSO: {fileID: 11400000, guid: fc97e84ac68e46c45bab58706020e002, type: 2}
+  currencyServiceSO: {fileID: 11400000, guid: 6723174edacfa85428f84b45088890f3, type: 2}
+  chestPrefab: {fileID: 2288418893976076317, guid: 51f9f45a6087fb046acffbd39470fe63, type: 3}
   raycaster: {fileID: 1837703651}
 --- !u!1 &49305976
 GameObject:
@@ -639,7 +640,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2648,7 +2649,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
