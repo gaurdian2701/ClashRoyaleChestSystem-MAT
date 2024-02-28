@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f080dc8ce5bed7e48baa8036a06e5a23, type: 3}
   m_Name: EpicChest
   m_EditorClassIdentifier: 
-  ChestType: 2
+  ChestRarity: 2
   ChestImage: {fileID: 1255700213, guid: c3d8506b5baf8c2449f501c3c3287075, type: 3}
   LowerCoinLimit: 600
   UpperCoinLimit: 800

@@ -14,12 +14,15 @@ public class InputService
         this.raycaster = raycaster; 
         raycastResult = new List<RaycastResult>();
     }
-
     public void HandlePlayerClicked(PointerEventData eventData)
     {
         raycaster.Raycast(eventData, raycastResult);
         ChestView chest = raycastResult[0].gameObject.GetComponent<ChestView>();
-        Debug.Log(chest);
         raycastResult.Clear();
+
+        if (chest != null)
+            chest.HandleOnClickEvent();
+        else
+            GameService.Instance.EventService.onEmptyCanvasClicked.Invoke();
     }
 }

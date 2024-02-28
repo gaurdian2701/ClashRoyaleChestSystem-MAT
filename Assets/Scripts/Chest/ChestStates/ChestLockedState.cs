@@ -9,5 +9,7 @@ public class ChestLockedState : IStateInterface
     public ChestLockedState(ChestController controller) { this.controller = controller; }
     public override void OnStateEnter()
     {
+        controller.ChestView.SetChestStateText(ChestState.LOCKED);
+        controller.ChestView.InitializeChestData();
     }
 }
