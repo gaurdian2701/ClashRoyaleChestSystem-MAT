@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChestUnlockingState : IStateInterface
 {
     private ChestController controller;
-    public float waitTime { get; private set; }
+    public float waitTime { get; private set; } //Time left to unlock chest
     public ChestUnlockingState(ChestController controller) 
     {
         this.controller = controller;
@@ -14,6 +14,7 @@ public class ChestUnlockingState : IStateInterface
     public override void OnStateEnter() 
     {
         controller.ChestView.SetChestStateText(ChestState.UNLOCKING);
+        SetTimeStep(controller.ChestData.WaitTime * 60);
     }
 
     public override void Update()
@@ -30,9 +31,8 @@ public class ChestUnlockingState : IStateInterface
 
     public override void OnStateExit()
     {
-        GameService.Instance.EventService.onChestUnlocked.Invoke(controller.ChestView);
         waitTime = 0;
         controller.UpdateTimeStep(waitTime);
     }
-    public void SetTimeStep(float timeStep) => waitTime = timeStep;
+    public void SetTimeStep(float timeStep) => waitTime = timeStep; //Set the waiting time to value
 }

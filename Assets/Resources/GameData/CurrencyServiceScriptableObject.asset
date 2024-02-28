@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CurrencyServiceScriptableObject
   m_EditorClassIdentifier: 
   startingCoins: 100
-  startingGems: 100
+  startingGems: 80

@@ -13,9 +13,6 @@ public class CurrencyService
     }
 
     public void Init() => NotifyUIOfCurrencyChange();
-
-    public void SetCurrentCoins(int coins) { currentCoins = coins; }
-    public void SetCurrentGems(int gems) {  currentGems = gems; }
     public void AdjustCoins(int coins) { currentCoins += coins; NotifyUIOfCurrencyChange(); }
     public void AdjustGems(int gems) { currentGems += gems; NotifyUIOfCurrencyChange(); }
     public bool HasEnoughGems(int gems) => currentGems >= gems;

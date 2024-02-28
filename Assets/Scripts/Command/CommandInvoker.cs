@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ public class CommandInvoker
 
     public CommandInvoker() => commandStack = new Stack<Command>();
 
+    public void Init() => GameService.Instance.EventService.onChestOpened += RemoveCommandAssociatedWithChestUnlock;
+
     public void ProcessCommand(Command command) => ExecuteCommand(command);
     public void ExecuteCommand(Command command)
     {
@@ -17,7 +20,16 @@ public class CommandInvoker
     }
     public void UndoCommand()
     {
-        if (commandStack.Any())
+        if (commandStack.Count > 0)
+        {
+            //The while loop is added to handle an edge case where there is a command in the stack but the chestview associated with that command is destroyed
+            //because the user has already opened it
+            while (commandStack.Peek().commandData.ChestView == null) 
+                commandStack.Pop();
             commandStack.Pop().Undo();
+        }
+    }
+    private void RemoveCommandAssociatedWithChestUnlock(ChestView view)
+    {
     }
 }

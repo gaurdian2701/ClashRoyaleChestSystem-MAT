@@ -15,17 +15,21 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Button startUnlockingChestButton;
     [SerializeField] private Button unlockChestWithGemsButton;
     [SerializeField] private Button undoButton;
+    [SerializeField] private Button collectRewardsButton;
 
     [Header("Panels")]
     [SerializeField] private GameObject chestsPanel;
     [SerializeField] private GameObject openChestPanel;
     [SerializeField] private GameObject startUnlockingChestPanel;
+    [SerializeField] private GameObject chestRewardsPanel;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI coinsText;
     [SerializeField] private TextMeshProUGUI gemsText;
     [SerializeField] private TextMeshProUGUI gemsToUnlockText;
     [SerializeField] private TextMeshProUGUI popUpInfoText;
+    [SerializeField] private TextMeshProUGUI coinsRewardText;
+    [SerializeField] private TextMeshProUGUI gemsRewardText;
 
 
     private ChestView currentChestSelected;
@@ -34,8 +38,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         SubscribeToEvents();
         InitializeTexts();
-        ToggleOpenChestPanel(false);
-        ToggleStartUnlockingChestPanel(false);
+        InitializePanels();
     }
 
     private void OnDestroy()
@@ -47,11 +50,13 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         getChestButton.onClick.AddListener(GenerateRandomChest);
         startUnlockingChestButton.onClick.AddListener(StartChestUnlock);
-        unlockChestWithGemsButton.onClick.AddListener(OpenChestWithGems);
+        unlockChestWithGemsButton.onClick.AddListener(OnChestOpenedWithGems);
         undoButton.onClick.AddListener(InitiateUndoFunctionality);
+        collectRewardsButton.onClick.AddListener(CollectRewards);
         GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
         GameService.Instance.EventService.onUnlockingChestClicked += HandleUnlockingChestClicked;
+        GameService.Instance.EventService.onUnlockedChestClicked += HandleUnlockedChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked += HandleEmptyCanvasClicked;
         GameService.Instance.EventService.onStartUnlockingChestSuccessful += HandleChestUnlockingSuccessful;
         GameService.Instance.EventService.onStartUnlockingChestFailed += HandleChestUnlockingFailed;
@@ -66,6 +71,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         startUnlockingChestButton.onClick.RemoveAllListeners();
         unlockChestWithGemsButton.onClick.RemoveAllListeners();
         undoButton.onClick.RemoveAllListeners();
+        collectRewardsButton.onClick.RemoveAllListeners();
         GameService.Instance.EventService.onChestSetupComplete -= AddChestToUI;
         GameService.Instance.EventService.onLockedChestClicked -= HandleLockedChestClicked;
         GameService.Instance.EventService.onEmptyCanvasClicked -= HandleEmptyCanvasClicked;
@@ -81,7 +87,12 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         gemsText.text = null;
         popUpInfoText.text = null;
     }
-
+    private void InitializePanels()
+    {
+        ToggleOpenChestPanel(false);
+        ToggleStartUnlockingChestPanel(false);
+        ToggleChestRewardsPanel(false);
+    }
     private void ShowPopUpInfo(string text)
     {
         if (popUpInfoText.text != null)
@@ -102,12 +113,13 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     private void GenerateRandomChest() => GameService.Instance.ChestService.GenerateRandomChest();
     private void ToggleOpenChestPanel(bool toggle) => openChestPanel.SetActive(toggle);
     private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
+    private void ToggleChestRewardsPanel(bool toggle) => chestRewardsPanel.SetActive(toggle);
     private void ToggleUndoButton(bool toggle) => undoButton.gameObject.SetActive(toggle);
     private void InitiateUndoFunctionality()
     {
         GameService.Instance.CommandService.CommandInvoker.UndoCommand();
     }
-    private void OpenChestWithGems()
+    private void OnChestOpenedWithGems()
     {
         int gems = currentChestSelected.controller.GetGemsToUnlock();
         if (!GameService.Instance.CurrencyService.HasEnoughGems(gems))
@@ -131,6 +143,15 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         commandData.SetGemsLost(gems);
         return commandData;
     }
+    private void CollectRewards()
+    {
+        GameService.Instance.CurrencyService.AdjustCoins(currentChestSelected.coinsReward);
+        GameService.Instance.CurrencyService.AdjustGems(currentChestSelected.gemsReward);
+        GameService.Instance.EventService.onChestOpened(currentChestSelected);
+        GameService.Instance.ChestService.DestroyChest(currentChestSelected);
+        currentChestSelected = null;
+        ToggleChestRewardsPanel(false);
+    }
     private void HandleLockedChestClicked(ChestView view)
     {
         SetCurrentChestClicked(view);
@@ -140,6 +161,13 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         SetCurrentChestClicked(view);
         UpdateOpenChestPanel();
+    }
+    private void HandleUnlockedChestClicked(ChestView view)
+    {
+        SetCurrentChestClicked(view);
+        ToggleChestRewardsPanel(true);
+        coinsRewardText.text = currentChestSelected.coinsReward.ToString();
+        gemsRewardText.text = currentChestSelected.gemsReward.ToString();  
     }
 
     private void UpdateOpenChestPanel()
@@ -152,8 +180,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     private void HandleEmptyCanvasClicked()
     {
         this.currentChestSelected = null;
-        ToggleStartUnlockingChestPanel(false);
-        ToggleOpenChestPanel(false);
+        InitializePanels();
     }
     private void StartChestUnlock()
     {
