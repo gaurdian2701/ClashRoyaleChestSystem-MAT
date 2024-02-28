@@ -1,4 +1,4 @@
-public enum ChestType
+public enum ChestRarity
 {
     Common,
     Rare,

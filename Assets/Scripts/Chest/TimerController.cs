@@ -22,6 +22,8 @@ public class TimerController
 
     private void UpdateTime(int hours , int minutes, int seconds) => currentTime.SetCurrentTime(hours, minutes, seconds);
     public ChestTime GetCurrentTime() => currentTime;
+
+    //Converts the seconds left to unlock to H/M/S format
     public void CountTime(float timeStep)
     {
         int seconds = Mathf.FloorToInt(timeStep % 60);

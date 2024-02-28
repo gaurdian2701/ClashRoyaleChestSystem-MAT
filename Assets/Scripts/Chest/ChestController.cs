@@ -14,13 +14,24 @@ public class ChestController
     {   
         this.ChestView = chestView;
         ChestData = chestSO;
-        CreateStateMachine();
         timerController = new TimerController(ChestData.WaitTime);
-
         ChestView.SetChestController(this);
-        ChestView.InitializeChestData();
+        CreateStateMachine();
     }
 
+    public int GetGemsToUnlock()
+    {
+        ChestTime timeLeft = timerController.GetCurrentTime();
+        return timeLeft.hours > 0 ? timeLeft.minutes * timeLeft.hours : timeLeft.minutes;
+    }
+
+    public void SetRewards(int coins, int gems)
+    {
+        ChestView.SetRewards(coins, gems);
+    }
+
+    public float GetTimeStep() => (StateMachine.CurrentState as ChestUnlockingState).waitTime;
+    public void SetTimeStep(float timeStep) => (StateMachine.CurrentState as ChestUnlockingState).SetTimeStep(timeStep);
     public void UpdateTimeStep(float timeStep)
     {
         timerController.CountTime(timeStep);

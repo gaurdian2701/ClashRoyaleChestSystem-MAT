@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5900534489933784672}
   - component: {fileID: 3719004526878145562}
   - component: {fileID: 8702853498866783483}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ChestStateText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291231491
+  m_fontColor: {r: 0.013207495, g: 1, b: 0.7745679, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 6267634178116705863}
   - component: {fileID: 8920551281682821658}
   - component: {fileID: 2288418893976076317}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ChestPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1075418149, guid: c3d8506b5baf8c2449f501c3c3287075, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 7715404527292575164}
   - component: {fileID: 543166605892540069}
   - component: {fileID: 686087707827023523}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TimerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -304,8 +304,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291231491
+  m_fontColor: {r: 0.013207495, g: 1, b: 0.7745679, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
