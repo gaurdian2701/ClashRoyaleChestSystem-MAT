@@ -5,8 +5,7 @@ using UnityEngine;
 public class CommandService
 {
     public CommandInvoker CommandInvoker { get; private set; }
-    public CommandService()
-    {
-        CommandInvoker = new CommandInvoker();
-    }
+    public CommandService() => CommandInvoker = new CommandInvoker();
+    public void Init() => CommandInvoker.Init();
+
 }

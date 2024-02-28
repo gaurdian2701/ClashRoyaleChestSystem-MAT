@@ -6,8 +6,10 @@ using UnityEngine;
 public class ChestLockedState : IStateInterface
 {
     private ChestController controller;
-    public ChestOpenState(ChestController controller) { this.controller = controller; }
-    public void OnStateEnter()
+    public ChestLockedState(ChestController controller) { this.controller = controller; }
+    public override void OnStateEnter()
     {
+        controller.ChestView.SetChestStateText(ChestState.LOCKED);
+        controller.ChestView.InitializeChestData();
     }
 }

@@ -6,17 +6,11 @@ using UnityEngine.UIElements;
 [CreateAssetMenu(fileName = "ChestScriptableObject", menuName = "ScriptableObject/NewChest")]
 public class ChestScriptableObject : ScriptableObject
 {
-    public ChestType ChestType;
-    public Image ChestImage;
+    public ChestRarity ChestRarity;
+    public Sprite ChestImage;
     public int LowerCoinLimit;
     public int UpperCoinLimit;
     public int LowerGemLimit;
     public int UpperGemLimit;
     public int WaitTime;
-
-    public struct UIInfo
-    {
-        
-    }
-
 }
