@@ -37,6 +37,5 @@ public class ChestStateMachine
         states.Add(ChestState.LOCKED, new ChestLockedState(controller));
         states.Add(ChestState.UNLOCKING, new ChestUnlockingState(controller));
         states.Add(ChestState.UNLOCKED, new ChestUnlockedState(controller));  
-        states.Add(ChestState.OPENED, new ChestOpenState(controller));
     }
 }
