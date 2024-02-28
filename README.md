@@ -8,3 +8,4 @@ COMMAND FOLDER: Contains scripts related to Command Invoker and different Comman
 MAIN FOLDER: Contains the main GameService.cs script
 SERVICE FOLDER: Contains scripts of all Services other than GameService.cs in the game.
 STATE MACHINE FOLDER: Contains the ChestStateMachine.cs script
+
