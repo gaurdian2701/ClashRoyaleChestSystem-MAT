@@ -7,23 +7,34 @@ using UnityEngine.UI;
 
 public class GameService : GenericMonoSingleton<GameService>
 {
+    [Header("SERVICES")]
+    [SerializeField] private ChestServiceScriptableObject chestServiceSO;
+    [SerializeField] private CurrencyServiceScriptableObject currencyServiceSO;
+
     [Header("CHEST DATA")]
     [SerializeField] private ChestView chestPrefab;
-    [SerializeField] private ChestServiceScriptableObject chestServiceSO;
     [SerializeField] private GraphicRaycaster raycaster;
 
     public InputService InputService;
     public ChestService ChestService;
     public EventService EventService;
     public CommandService CommandService;
+    public CurrencyService CurrencyService;
 
     protected override void Awake()
     {
         base.Awake();
 
+        EventService = new EventService();
         InputService = new InputService(raycaster);
         ChestService = new ChestService(chestPrefab, chestServiceSO);
-        EventService = new EventService();
         CommandService = new CommandService();
+        CurrencyService = new CurrencyService(currencyServiceSO);
+    }
+
+    private void Start()
+    {
+        CurrencyService.Init();
+        CommandService.Init();
     }
 }
