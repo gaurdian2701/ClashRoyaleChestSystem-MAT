@@ -22,7 +22,9 @@ public class CommandInvoker
     {
         if (commandStack.Count > 0)
         {
-            while(commandStack.Peek().commandData.ChestView == null)
+            //The while loop is added to handle an edge case where there is a command in the stack but the chestview associated with that command is destroyed
+            //because the user has already opened it
+            while (commandStack.Peek().commandData.ChestView == null) 
                 commandStack.Pop();
             commandStack.Pop().Undo();
         }

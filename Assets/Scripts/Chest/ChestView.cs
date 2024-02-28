@@ -20,7 +20,7 @@ public class ChestView : MonoBehaviour
         controller.StateMachine?.Update();
     }
 
-    public void SetChestStateText(ChestState chestState) => chestStateText.text = chestState.ToString();
+    public void SetChestStateText(ChestState chestState) => chestStateText.text = chestState.ToString(); //Text that shows whether the chest is locked, unlocked, etc.
     public void SetChestController(ChestController controller) => this.controller = controller;
     public void UpdateChestTimerText(ChestTime timeLeft) //Updates the time shown as text in the UI
     {
@@ -35,7 +35,7 @@ public class ChestView : MonoBehaviour
         timerText.text = $"{hoursText}: {minsText} : {secondsText}";
     }
 
-    private void SetAppropriateText(out string text, int time) => text = time < 10 ? $"0{time}" : time.ToString();
+    private void SetAppropriateText(out string text, int time) => text = time < 10 ? $"0{time}" : time.ToString(); //Adds 0 as prefix to number if needed
 
     public void SetRewards(int coins, int gems) { coinsReward = coins; gemsReward = gems; }
     public void InitializeChestData() //Sets the image and time to unlock when the chest is locked
@@ -48,7 +48,7 @@ public class ChestView : MonoBehaviour
         controller.StateMachine.ChangeState(ChestState.LOCKED);
         SetChestStateText(ChestState.QUEUED);
     }
-    public void HandleOnClickEvent()
+    public void HandleOnClickEvent() //Based on the state of the chest, the corresponding UI panel would be shown accordingly.
     {
         switch(controller.StateMachine.ChestState)
         {
@@ -62,7 +62,7 @@ public class ChestView : MonoBehaviour
         }
     }
 
-    public void ProcessCommand(Command command)
+    public void ProcessCommand(Command command) //Processes command to update original time remaining in the Command Data
     {
         command.commandData.SetChestTimeStep(controller.GetTimeStep());
         GameService.Instance.CommandService.CommandInvoker.ProcessCommand(command);

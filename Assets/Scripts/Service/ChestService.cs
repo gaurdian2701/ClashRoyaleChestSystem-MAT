@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ChestService
 {
-    private List<ChestScriptableObject> chestsList;
+    private List<ChestScriptableObject> chestsDataList;
     private List<ChestView> chestsInQueueForUnlock;
     private ChestView chestPrefab;
     private int chestsLimit;
@@ -29,8 +29,8 @@ public class ChestService
     {
         ChestScriptableObject[] cList;
         cList = Resources.LoadAll<ChestScriptableObject>("Chests");
-        chestsList = new List<ChestScriptableObject>(cList);
-        chestsList.Sort((x,y) => x.ChestRarity.CompareTo(y.ChestRarity));
+        chestsDataList = new List<ChestScriptableObject>(cList);
+        chestsDataList.Sort((x,y) => x.ChestRarity.CompareTo(y.ChestRarity));
     }
     public void GenerateRandomChest()
     {
@@ -42,10 +42,14 @@ public class ChestService
 
         int chestType = random.Next((int)ChestRarity.Common, (int)ChestRarity.Legendary);
 
-        ChestScriptableObject chestSO = chestsList[chestType];
+        ChestScriptableObject chestSO = chestsDataList[chestType];
         CreateChest(chestSO);
     }
 
+    //Remove Chest once rewards have been collected
+    public void DestroyChest(ChestView chest) => GameObject.Destroy(chest.gameObject);
+
+    //If there is already a chest that is unlocking, the chest selected for unlocking will be put in a waiting queue
     public void AddChestToWaitingQueue(ChestView chestView)
     {
         if (chestsInQueueForUnlock.Count <= 0)
@@ -63,6 +67,7 @@ public class ChestService
         chestInCommand.ProcessCommand(command);
     }
 
+    //Sets undone chest for unlocking and queues the rest of the chests in the waiting queue for unlock if needed.
     public void ProcessUndo(ChestView chestView, int index)
     {
         chestsInQueueForUnlock.Insert(index, chestView);
@@ -86,8 +91,6 @@ public class ChestService
     }
     private void RemoveChestFromQueue(ChestView chest)
     {
-        //foreach (ChestView c in chestsInQueueForUnlock) { Debug.Log(c.gameObject.name); }
-
         if (chestsInQueueForUnlock[0] != chest)
             throw new Exception("Chest unlocked does not match with queue front!");
 
