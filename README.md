@@ -9,3 +9,4 @@ MAIN FOLDER: Contains the main GameService.cs script
 SERVICE FOLDER: Contains scripts of all Services other than GameService.cs in the game.
 STATE MACHINE FOLDER: Contains the ChestStateMachine.cs script
 
+![alt text](https://github.com/gaurdian2701/ClashRoyaleChestSystem-MAT/blob/Feature5-ChestRewards/ChestSystemArchitecture.jpg)
