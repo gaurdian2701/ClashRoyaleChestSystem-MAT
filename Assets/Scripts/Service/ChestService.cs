@@ -13,25 +13,23 @@ public class ChestService
     private int numberOfChestsGenerated;
     private System.Random random;
 
-    public ChestService(ChestView chestPrefab, ChestServiceScriptableObject chestServiceSO)
+    //Didnt use Resources.Load since it apparently results in compile time overhead.
+    //Instead I have added a list for SOs in GameService itself
+    public ChestService(ChestView chestPrefab, ChestServiceScriptableObject chestServiceSO, List<ChestScriptableObject> _chestData)
     {
         this.chestPrefab = chestPrefab;
         chestsLimit = chestServiceSO.chestLimit;
+        chestsDataList = _chestData;
+
         numberOfChestsGenerated = 0;
         chestsInQueueForUnlock = new List<ChestView>();
-        LoadChests();
+        SortChests();
 
         GameService.Instance.EventService.onChestUnlocked += RemoveChestFromQueue;
     }
 
     ~ChestService() { GameService.Instance.EventService.onChestUnlocked -= RemoveChestFromQueue; }
-    private void LoadChests()
-    {
-        ChestScriptableObject[] cList;
-        cList = Resources.LoadAll<ChestScriptableObject>("Chests");
-        chestsDataList = new List<ChestScriptableObject>(cList);
-        chestsDataList.Sort((x,y) => x.ChestRarity.CompareTo(y.ChestRarity));
-    }
+    private void SortChests() => chestsDataList.Sort((x,y) => x.ChestRarity.CompareTo(y.ChestRarity));
     public void GenerateRandomChest()
     {
         if (numberOfChestsGenerated >= chestsLimit)

@@ -171,6 +171,11 @@ MonoBehaviour:
   currencyServiceSO: {fileID: 11400000, guid: 6723174edacfa85428f84b45088890f3, type: 2}
   chestPrefab: {fileID: 2288418893976076317, guid: 51f9f45a6087fb046acffbd39470fe63, type: 3}
   raycaster: {fileID: 1837703651}
+  chestDataList:
+  - {fileID: 11400000, guid: f157486ff7e22724496b42ddae993314, type: 2}
+  - {fileID: 11400000, guid: a53ad729a352ff94ba50ed32e73c9e9b, type: 2}
+  - {fileID: 11400000, guid: b65456fbc342995449177e621a13b24c, type: 2}
+  - {fileID: 11400000, guid: 751c8e7008ee8e54381bc6f0f892e4d3, type: 2}
 --- !u!1 &49305976
 GameObject:
   m_ObjectHideFlags: 0

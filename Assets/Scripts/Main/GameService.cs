@@ -14,6 +14,7 @@ public class GameService : GenericMonoSingleton<GameService>
     [Header("CHEST DATA")]
     [SerializeField] private ChestView chestPrefab;
     [SerializeField] private GraphicRaycaster raycaster;
+    [SerializeField] private List<ChestScriptableObject> chestDataList;
 
     public InputService InputService;
     public ChestService ChestService;
@@ -27,7 +28,7 @@ public class GameService : GenericMonoSingleton<GameService>
 
         EventService = new EventService();
         InputService = new InputService(raycaster);
-        ChestService = new ChestService(chestPrefab, chestServiceSO);
+        ChestService = new ChestService(chestPrefab, chestServiceSO, chestDataList);
         CommandService = new CommandService();
         CurrencyService = new CurrencyService(currencyServiceSO);
     }
