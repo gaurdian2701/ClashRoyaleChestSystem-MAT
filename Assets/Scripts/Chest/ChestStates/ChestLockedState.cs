@@ -12,4 +12,6 @@ public class ChestLockedState : IStateInterface
         controller.ChestView.SetChestStateText(ChestState.LOCKED);
         controller.ChestView.InitializeChestData();
     }
+
+    public override void HandleClickEvent() => GameService.Instance.EventService.onLockedChestClicked.Invoke(controller.ChestView);
 }

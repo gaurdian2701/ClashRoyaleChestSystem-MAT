@@ -13,6 +13,7 @@ public class ChestUnlockedState : IStateInterface
         GenerateRewards();
     }
 
+    public override void HandleClickEvent() => GameService.Instance.EventService.onUnlockedChestClicked.Invoke(controller.ChestView);
     private void GenerateRewards()
     {
         System.Random rand = new System.Random();

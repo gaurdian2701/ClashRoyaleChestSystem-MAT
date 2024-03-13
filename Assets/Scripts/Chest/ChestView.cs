@@ -48,19 +48,9 @@ public class ChestView : MonoBehaviour
         controller.StateMachine.ChangeState(ChestState.LOCKED);
         SetChestStateText(ChestState.QUEUED);
     }
-    public void HandleOnClickEvent() //Based on the state of the chest, the corresponding UI panel would be shown accordingly.
-    {
-        switch(controller.StateMachine.ChestState)
-        {
-            case ChestState.LOCKED:
-                GameService.Instance.EventService.onLockedChestClicked.Invoke(this); break;
-            case ChestState.UNLOCKING:
-                GameService.Instance.EventService.onUnlockingChestClicked.Invoke(this); break;
-            case ChestState.UNLOCKED:
-                GameService.Instance.EventService.onUnlockedChestClicked.Invoke(this); break;
-            default: break;
-        }
-    }
+
+    //Based on the state of the chest, the corresponding UI panel would be shown accordingly.
+    public void HandleOnClickEvent() => controller.OnChestClicked();
 
     public void ProcessCommand(Command command) //Processes command to update original time remaining in the Command Data
     {
