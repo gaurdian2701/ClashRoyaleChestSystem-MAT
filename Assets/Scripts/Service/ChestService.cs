@@ -44,7 +44,12 @@ public class ChestService
     }
 
     //Remove Chest once rewards have been collected
-    public void DestroyChest(ChestView chest) => GameObject.Destroy(chest.gameObject);
+    public void ReturnChestToPool(ChestView chest)
+    {
+        numberOfChestsGenerated--;
+        chest.gameObject.SetActive(false);
+        GameService.Instance.PoolService.ChestPool.ReturnItem(chest);
+    }
 
     //If there is already a chest that is unlocking, the chest selected for unlocking will be put in a waiting queue
     public void AddChestToWaitingQueue(ChestView chestView)
@@ -102,9 +107,8 @@ public class ChestService
 
     private void CreateChest(ChestScriptableObject chestSO)
     {
-        ChestView chest = GameObject.Instantiate(chestPrefab);
-        chest.gameObject.name = chestSO.name;
-        ChestController chestController = new ChestController(chest, chestSO);
+        ChestView chest = GameService.Instance.PoolService.ChestPool.GetChest(chestSO);
+        chest.gameObject.SetActive(true);
         GameService.Instance.EventService.OnChestSetupComplete.Invoke(chest);
     }
 }

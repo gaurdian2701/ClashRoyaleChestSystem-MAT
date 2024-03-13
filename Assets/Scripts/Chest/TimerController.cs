@@ -14,7 +14,7 @@ public class TimerController
         InitializeTime(waitTime);
     }
 
-    private void InitializeTime(int waitTime)
+    public void InitializeTime(int waitTime)
     {
         int hours = waitTime / maxMinutesAndSeconds;
         int minutes = waitTime % maxMinutesAndSeconds;

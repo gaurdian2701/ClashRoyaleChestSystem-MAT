@@ -20,6 +20,13 @@ public class ChestView : MonoBehaviour
         controller.StateMachine?.Update();
     }
 
+    private void OnDisable()
+    {
+        controller.StateMachine?.ChangeState(ChestState.LOCKED);
+        controller.ResetTimer();
+        InitializeChestData();
+    }
+
     public void SetChestStateText(ChestState chestState) => chestStateText.text = chestState.ToString(); //Text that shows whether the chest is locked, unlocked, etc.
     public void SetChestController(ChestController controller) => this.controller = controller;
     public void UpdateChestTimerText(ChestTime timeLeft) //Updates the time shown as text in the UI

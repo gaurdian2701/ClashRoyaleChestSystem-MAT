@@ -22,6 +22,8 @@ public class GameService : GenericMonoSingleton<GameService>
     public CommandService CommandService {  get; private set; }
     public CurrencyService CurrencyService {  get; private set; }
 
+    public PoolService PoolService { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -31,6 +33,7 @@ public class GameService : GenericMonoSingleton<GameService>
         ChestService = new ChestService(chestPrefab, chestServiceSO, chestDataList);
         CommandService = new CommandService();
         CurrencyService = new CurrencyService(currencyServiceSO);
+        PoolService = new PoolService(chestPrefab);
     }
 
     private void Start()
