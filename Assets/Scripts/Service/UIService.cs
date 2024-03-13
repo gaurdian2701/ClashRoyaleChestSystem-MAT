@@ -147,7 +147,6 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         GameService.Instance.CurrencyService.AdjustCoins(currentChestSelected.coinsReward);
         GameService.Instance.CurrencyService.AdjustGems(currentChestSelected.gemsReward);
-        GameService.Instance.EventService.onChestOpened(currentChestSelected);
         GameService.Instance.ChestService.DestroyChest(currentChestSelected);
         currentChestSelected = null;
         ToggleChestRewardsPanel(false);

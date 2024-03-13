@@ -10,8 +10,6 @@ public class CommandInvoker
 
     public CommandInvoker() => commandStack = new Stack<Command>();
 
-    public void Init() => GameService.Instance.EventService.onChestOpened += RemoveCommandAssociatedWithChestUnlock;
-
     public void ProcessCommand(Command command) => ExecuteCommand(command);
     public void ExecuteCommand(Command command)
     {
@@ -28,8 +26,5 @@ public class CommandInvoker
                 commandStack.Pop();
             commandStack.Pop().Undo();
         }
-    }
-    private void RemoveCommandAssociatedWithChestUnlock(ChestView view)
-    {
     }
 }
