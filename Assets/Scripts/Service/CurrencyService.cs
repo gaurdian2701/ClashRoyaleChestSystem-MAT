@@ -17,5 +17,5 @@ public class CurrencyService
     public void AdjustGems(int gems) { currentGems += gems; NotifyUIOfCurrencyChange(); }
     public bool HasEnoughGems(int gems) => currentGems >= gems;
 
-    private void NotifyUIOfCurrencyChange() => GameService.Instance.EventService.onCurrencyUpdated?.Invoke(currentCoins, currentGems);
+    private void NotifyUIOfCurrencyChange() => GameService.Instance.EventService.OnCurrencyUpdated?.Invoke(currentCoins, currentGems);
 }

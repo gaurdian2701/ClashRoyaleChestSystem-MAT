@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameService : GenericMonoSingleton<GameService>
 {
-    [Header("SERVICES")]
+    [Header("SERVICES SCRIPTABLE OBJECTS")]
     [SerializeField] private ChestServiceScriptableObject chestServiceSO;
     [SerializeField] private CurrencyServiceScriptableObject currencyServiceSO;
 
@@ -16,11 +16,11 @@ public class GameService : GenericMonoSingleton<GameService>
     [SerializeField] private GraphicRaycaster raycaster;
     [SerializeField] private List<ChestScriptableObject> chestDataList;
 
-    public InputService InputService;
-    public ChestService ChestService;
-    public EventService EventService;
-    public CommandService CommandService;
-    public CurrencyService CurrencyService;
+    public InputService InputService {  get; private set; }
+    public ChestService ChestService {  get; private set; }
+    public EventService EventService {  get; private set; }
+    public CommandService CommandService {  get; private set; }
+    public CurrencyService CurrencyService {  get; private set; }
 
     protected override void Awake()
     {

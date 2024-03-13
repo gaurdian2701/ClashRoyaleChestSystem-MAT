@@ -23,12 +23,13 @@ public class ChestService
 
         numberOfChestsGenerated = 0;
         chestsInQueueForUnlock = new List<ChestView>();
+        random = new System.Random();
         SortChests();
 
-        GameService.Instance.EventService.onChestUnlocked += RemoveChestFromQueue;
+        GameService.Instance.EventService.OnChestUnlocked += RemoveChestFromQueue;
     }
 
-    ~ChestService() { GameService.Instance.EventService.onChestUnlocked -= RemoveChestFromQueue; }
+    ~ChestService() { GameService.Instance.EventService.OnChestUnlocked -= RemoveChestFromQueue; }
     private void SortChests() => chestsDataList.Sort((x,y) => x.ChestRarity.CompareTo(y.ChestRarity));
     public void GenerateRandomChest()
     {
@@ -36,8 +37,6 @@ public class ChestService
             return;
 
         numberOfChestsGenerated++;
-        random = new System.Random();
-
         int chestType = random.Next((int)ChestRarity.Common, (int)ChestRarity.Legendary);
 
         ChestScriptableObject chestSO = chestsDataList[chestType];
@@ -50,7 +49,7 @@ public class ChestService
     //If there is already a chest that is unlocking, the chest selected for unlocking will be put in a waiting queue
     public void AddChestToWaitingQueue(ChestView chestView)
     {
-        if (chestsInQueueForUnlock.Count <= 0)
+        if (chestsInQueueForUnlock.Count == 0)
             HandleChestUnlocking(chestView);
         else
             HandleChestQueueing(chestView);
@@ -61,7 +60,7 @@ public class ChestService
     public void ProcessCommand(Command command)
     {
         command.commandData.SetChestIndexInQueue(chestsInQueueForUnlock.IndexOf(command.commandData.ChestView));
-        ChestView chestInCommand = chestsInQueueForUnlock.Find((x) => x == command.commandData.ChestView);
+        ChestView chestInCommand = chestsInQueueForUnlock.Find((chest) => chest == command.commandData.ChestView);
         chestInCommand.ProcessCommand(command);
     }
 
@@ -71,20 +70,21 @@ public class ChestService
         chestsInQueueForUnlock.Insert(index, chestView);
         HandleChestUnlocking(chestView);
 
-        foreach(ChestView c in chestsInQueueForUnlock)
-            if(c != chestView)
-                HandleChestQueueing(c);
+        //Dont use foreach as it creates objects for iteration
+        for(int i = 0; i<chestsInQueueForUnlock.Count; i++)
+            if (chestsInQueueForUnlock[i] != chestView)
+                HandleChestQueueing(chestsInQueueForUnlock[i]);
     }
 
     private void HandleChestUnlocking(ChestView chestView)
     {
-        GameService.Instance.EventService.onStartUnlockingChestSuccessful?.Invoke();
+        GameService.Instance.EventService.OnStartUnlockingChestSuccessful?.Invoke();
         StartUnlockingChest(chestView);
     }
 
     private void HandleChestQueueing(ChestView chestView)
     {
-        GameService.Instance.EventService.onStartUnlockingChestFailed?.Invoke();
+        GameService.Instance.EventService.OnStartUnlockingChestFailed?.Invoke();
         SetChestStateForQueueing(chestView);
     }
     private void RemoveChestFromQueue(ChestView chest)
@@ -105,6 +105,6 @@ public class ChestService
         ChestView chest = GameObject.Instantiate(chestPrefab);
         chest.gameObject.name = chestSO.name;
         ChestController chestController = new ChestController(chest, chestSO);
-        GameService.Instance.EventService.onChestSetupComplete.Invoke(chest);
+        GameService.Instance.EventService.OnChestSetupComplete.Invoke(chest);
     }
 }

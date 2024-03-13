@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class EventService
 {
-    public Action<ChestView> onChestSetupComplete;
-    public Action<ChestView> onLockedChestClicked;
-    public Action<ChestView> onUnlockingChestClicked;
-    public Action<ChestView> onUnlockedChestClicked;
-    public Action<ChestView> onChestUnlocked;
-    public Action onEmptyCanvasClicked;
-    public Action onStartUnlockingChestSuccessful;
-    public Action onStartUnlockingChestFailed;
-    public Action<int, int> onCurrencyUpdated;
+    public Action<ChestView> OnChestSetupComplete;
+    public Action<ChestView> OnLockedChestClicked;
+    public Action<ChestView> OnUnlockingChestClicked;
+    public Action<ChestView> OnUnlockedChestClicked;
+    public Action<ChestView> OnChestUnlocked;
+    public Action OnEmptyCanvasClicked;
+    public Action OnStartUnlockingChestSuccessful;
+    public Action OnStartUnlockingChestFailed;
+    public Action<int, int> OnCurrencyUpdated;
 }

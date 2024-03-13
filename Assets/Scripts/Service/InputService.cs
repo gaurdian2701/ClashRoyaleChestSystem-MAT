@@ -23,6 +23,6 @@ public class InputService
         if (chest != null)
             chest.HandleOnClickEvent();
         else
-            GameService.Instance.EventService.onEmptyCanvasClicked.Invoke();
+            GameService.Instance.EventService.OnEmptyCanvasClicked.Invoke();
     }
 }
