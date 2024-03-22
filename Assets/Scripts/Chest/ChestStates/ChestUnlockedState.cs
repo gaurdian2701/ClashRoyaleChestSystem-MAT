@@ -8,12 +8,12 @@ public class ChestUnlockedState : IStateInterface
     public ChestUnlockedState(ChestController controller) { this.controller = controller; }
     public override void OnStateEnter()
     {
-        GameService.Instance.EventService.OnChestUnlocked.Invoke(controller.ChestView);
+        GameService.Instance.EventService.InvokeChestUnlockedEvent(controller.ChestView);
         controller.ChestView.SetChestStateText(ChestState.UNLOCKED);
         GenerateRewards();
     }
 
-    public override void HandleClickEvent() => GameService.Instance.EventService.OnUnlockedChestClicked.Invoke(controller.ChestView);
+    public override void HandleClickEvent() => GameService.Instance.EventService.InvokeUnlockedChestClickedEvent(controller.ChestView);
     private void GenerateRewards()
     {
         System.Random rand = new System.Random();

@@ -83,13 +83,13 @@ public class ChestService
 
     private void HandleChestUnlocking(ChestView chestView)
     {
-        GameService.Instance.EventService.OnStartUnlockingChestSuccessful?.Invoke();
+        GameService.Instance.EventService.InvokeStartUnlockingChestSuccessfulEvent();
         StartUnlockingChest(chestView);
     }
 
     private void HandleChestQueueing(ChestView chestView)
     {
-        GameService.Instance.EventService.OnStartUnlockingChestFailed?.Invoke();
+        GameService.Instance.EventService.InvokeStartUnlockingChestFailedEvent();
         SetChestStateForQueueing(chestView);
     }
     private void RemoveChestFromQueue(ChestView chest)
@@ -109,6 +109,6 @@ public class ChestService
     {
         ChestView chest = GameService.Instance.PoolService.ChestPool.GetChest(chestSO);
         chest.gameObject.SetActive(true);
-        GameService.Instance.EventService.OnChestSetupComplete.Invoke(chest);
+        GameService.Instance.EventService.InvokeChestSetupCompleteEvent(chest);
     }
 }
