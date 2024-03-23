@@ -27,7 +27,7 @@ public class EventService
 
     public void InvokeChestSetupCompleteEvent(ChestView chestView) => OnChestSetupComplete?.Invoke(chestView);
     public void InvokeLockedChestClickedEvent(ChestView chestView) => OnLockedChestClicked?.Invoke(chestView);
-    public void InvokeUnlockingChestClickedEvent(ChestView chestView) => OnUnlockedChestClicked?.Invoke(chestView);
+    public void InvokeUnlockingChestClickedEvent(ChestView chestView) => OnUnlockingChestClicked?.Invoke(chestView);
     public void InvokeUnlockedChestClickedEvent(ChestView chestView) => OnUnlockedChestClicked.Invoke(chestView);
     public void InvokeChestUnlockedEvent(ChestView chestView) => OnChestUnlocked?.Invoke(chestView);
     public void InvokeEmptyCanvasClickedEvent() => OnEmptyCanvasClicked?.Invoke();

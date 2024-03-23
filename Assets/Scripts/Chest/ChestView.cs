@@ -48,6 +48,7 @@ public class ChestView : MonoBehaviour
     public void InitializeChestData() //Sets the image and time to unlock when the chest is locked
     {
         chestImage.sprite = controller.ChestData.ChestImage;
+        controller.ResetTimer();
         UpdateChestTimerText(controller.GetTimeLeft());
     }
     public void OnChestQueued()
