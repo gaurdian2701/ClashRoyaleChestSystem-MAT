@@ -6,16 +6,18 @@ using UnityEngine;
 public class TimerController
 {
     private ChestTime currentTime;
+    private const int maxMinutesAndSeconds = 60;
+    private const int secondsInAnHour = 3600;
     public TimerController(int waitTime)
     {
         currentTime = new ChestTime();
         InitializeTime(waitTime);
     }
 
-    private void InitializeTime(int waitTime)
+    public void InitializeTime(int waitTime)
     {
-        int hours = waitTime / 60;
-        int minutes = waitTime % 60;
+        int hours = waitTime / maxMinutesAndSeconds;
+        int minutes = waitTime % maxMinutesAndSeconds;
         int seconds = 0;
         UpdateTime(hours, minutes, seconds);
     }
@@ -26,9 +28,9 @@ public class TimerController
     //Converts the seconds left to unlock to H/M/S format
     public void CountTime(float timeStep)
     {
-        int seconds = Mathf.FloorToInt(timeStep % 60);
-        int minutes = Mathf.FloorToInt((timeStep / 60) % 60);
-        int hours = Mathf.FloorToInt(timeStep / 3600);
+        int seconds = Mathf.FloorToInt(timeStep % maxMinutesAndSeconds);
+        int minutes = Mathf.FloorToInt((timeStep / maxMinutesAndSeconds) % maxMinutesAndSeconds);
+        int hours = Mathf.FloorToInt(timeStep / secondsInAnHour);
         UpdateTime(hours, minutes, seconds);
     }
 }

@@ -20,6 +20,13 @@ public class ChestView : MonoBehaviour
         controller.StateMachine?.Update();
     }
 
+    private void OnDisable()
+    {
+        controller.StateMachine?.ChangeState(ChestState.LOCKED);
+        controller.ResetTimer();
+        InitializeChestData();
+    }
+
     public void SetChestStateText(ChestState chestState) => chestStateText.text = chestState.ToString(); //Text that shows whether the chest is locked, unlocked, etc.
     public void SetChestController(ChestController controller) => this.controller = controller;
     public void UpdateChestTimerText(ChestTime timeLeft) //Updates the time shown as text in the UI
@@ -41,6 +48,7 @@ public class ChestView : MonoBehaviour
     public void InitializeChestData() //Sets the image and time to unlock when the chest is locked
     {
         chestImage.sprite = controller.ChestData.ChestImage;
+        controller.ResetTimer();
         UpdateChestTimerText(controller.GetTimeLeft());
     }
     public void OnChestQueued()
@@ -48,19 +56,9 @@ public class ChestView : MonoBehaviour
         controller.StateMachine.ChangeState(ChestState.LOCKED);
         SetChestStateText(ChestState.QUEUED);
     }
-    public void HandleOnClickEvent() //Based on the state of the chest, the corresponding UI panel would be shown accordingly.
-    {
-        switch(controller.StateMachine.ChestState)
-        {
-            case ChestState.LOCKED:
-                GameService.Instance.EventService.onLockedChestClicked.Invoke(this); break;
-            case ChestState.UNLOCKING:
-                GameService.Instance.EventService.onUnlockingChestClicked.Invoke(this); break;
-            case ChestState.UNLOCKED:
-                GameService.Instance.EventService.onUnlockedChestClicked.Invoke(this); break;
-            default: break;
-        }
-    }
+
+    //Based on the state of the chest, the corresponding UI panel would be shown accordingly.
+    public void HandleOnClickEvent() => controller.OnChestClicked();
 
     public void ProcessCommand(Command command) //Processes command to update original time remaining in the Command Data
     {

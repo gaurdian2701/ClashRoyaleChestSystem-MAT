@@ -30,6 +30,8 @@ public class ChestStateMachine
         CurrentState?.OnStateEnter();
     }
 
+    public void HandleClickEvent() => CurrentState?.HandleClickEvent();
+
     public void SetTimeStep(float timeStep) => (CurrentState as ChestUnlockingState).SetTimeStep(timeStep);
 
     private void CreateStates()

@@ -30,8 +30,9 @@ public class ChestController
         ChestView.SetRewards(coins, gems);
     }
 
+    public void OnChestClicked() => StateMachine.HandleClickEvent();
     public float GetTimeStep() => (StateMachine.CurrentState as ChestUnlockingState).waitTime;
-    public void SetTimeStep(float timeStep) => (StateMachine.CurrentState as ChestUnlockingState).SetTimeStep(timeStep);
+    public void ResetTimer() => timerController.InitializeTime(ChestData.WaitTime);
     public void UpdateTimeStep(float timeStep)
     {
         timerController.CountTime(timeStep);

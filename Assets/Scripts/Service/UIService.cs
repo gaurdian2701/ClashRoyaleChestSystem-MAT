@@ -33,6 +33,10 @@ public class UIService : MonoBehaviour, IPointerDownHandler
 
 
     private ChestView currentChestSelected;
+    private const string chestUnlockedMessage = "CHEST UNLOCKED";
+    private const string startedUnlockingChestMessage = "STARTED UNLOCKING CHEST";
+    private const string chestQueuedMessage = "CHEST IS QUEUED";
+    private const string notEnoughGemsMessage = "NOT ENOUGH GEMS";
 
     private void Awake()
     {
@@ -48,39 +52,48 @@ public class UIService : MonoBehaviour, IPointerDownHandler
 
     private void SubscribeToEvents()
     {
+        SubscribeToButtons();
+        GameService.Instance.EventService.OnChestSetupComplete += AddChestToUI;
+        GameService.Instance.EventService.OnLockedChestClicked += HandleLockedChestClicked;
+        GameService.Instance.EventService.OnUnlockingChestClicked += HandleUnlockingChestClicked;
+        GameService.Instance.EventService.OnUnlockedChestClicked += HandleUnlockedChestClicked;
+        GameService.Instance.EventService.OnEmptyCanvasClicked += HandleEmptyCanvasClicked;
+        GameService.Instance.EventService.OnStartUnlockingChestSuccessful += HandleChestUnlockingSuccessful;
+        GameService.Instance.EventService.OnStartUnlockingChestFailed += HandleChestUnlockingFailed;
+        GameService.Instance.EventService.OnChestUnlocked += HandleChestUnlocked;
+        GameService.Instance.EventService.OnCurrencyUpdated += UpdateCurrency;
+       
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        UnsubscribeFromButtons();
+        GameService.Instance.EventService.OnChestSetupComplete -= AddChestToUI;
+        GameService.Instance.EventService.OnLockedChestClicked -= HandleLockedChestClicked;
+        GameService.Instance.EventService.OnEmptyCanvasClicked -= HandleEmptyCanvasClicked;
+        GameService.Instance.EventService.OnStartUnlockingChestSuccessful -= HandleChestUnlockingSuccessful;
+        GameService.Instance.EventService.OnStartUnlockingChestFailed -= HandleChestUnlockingFailed;
+        GameService.Instance.EventService.OnChestUnlocked -= HandleChestUnlocked;
+        GameService.Instance.EventService.OnCurrencyUpdated -= UpdateCurrency;
+    }
+
+    private void SubscribeToButtons()
+    {
         getChestButton.onClick.AddListener(GenerateRandomChest);
         startUnlockingChestButton.onClick.AddListener(StartChestUnlock);
         unlockChestWithGemsButton.onClick.AddListener(OnChestOpenedWithGems);
         undoButton.onClick.AddListener(InitiateUndoFunctionality);
         collectRewardsButton.onClick.AddListener(CollectRewards);
-        GameService.Instance.EventService.onChestSetupComplete += AddChestToUI;
-        GameService.Instance.EventService.onLockedChestClicked += HandleLockedChestClicked;
-        GameService.Instance.EventService.onUnlockingChestClicked += HandleUnlockingChestClicked;
-        GameService.Instance.EventService.onUnlockedChestClicked += HandleUnlockedChestClicked;
-        GameService.Instance.EventService.onEmptyCanvasClicked += HandleEmptyCanvasClicked;
-        GameService.Instance.EventService.onStartUnlockingChestSuccessful += HandleChestUnlockingSuccessful;
-        GameService.Instance.EventService.onStartUnlockingChestFailed += HandleChestUnlockingFailed;
-        GameService.Instance.EventService.onChestUnlocked += HandleChestUnlocked;
-        GameService.Instance.EventService.onCurrencyUpdated += UpdateCurrency;
-       
     }
 
-    private void UnsubscribeFromEvents()
+    private void UnsubscribeFromButtons()
     {
         getChestButton.onClick.RemoveAllListeners();
         startUnlockingChestButton.onClick.RemoveAllListeners();
         unlockChestWithGemsButton.onClick.RemoveAllListeners();
         undoButton.onClick.RemoveAllListeners();
         collectRewardsButton.onClick.RemoveAllListeners();
-        GameService.Instance.EventService.onChestSetupComplete -= AddChestToUI;
-        GameService.Instance.EventService.onLockedChestClicked -= HandleLockedChestClicked;
-        GameService.Instance.EventService.onEmptyCanvasClicked -= HandleEmptyCanvasClicked;
-        GameService.Instance.EventService.onStartUnlockingChestSuccessful -= HandleChestUnlockingSuccessful;
-        GameService.Instance.EventService.onStartUnlockingChestFailed -= HandleChestUnlockingFailed;
-        GameService.Instance.EventService.onChestUnlocked -= HandleChestUnlocked;
-        GameService.Instance.EventService.onCurrencyUpdated -= UpdateCurrency;
     }
-
     private void InitializeTexts()
     {
         coinsText.text = null;
@@ -107,9 +120,9 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         yield return new WaitForSecondsRealtime(3f);
         popUpInfoText.text = null;
     }
-    private void HandleChestUnlocked(ChestView view) => ShowPopUpInfo("CHEST UNLOCKED");
-    private void HandleChestUnlockingSuccessful() => ShowPopUpInfo("STARTED UNLOCKING CHEST");
-    private void HandleChestUnlockingFailed() => ShowPopUpInfo("CHEST IS QUEUED");
+    private void HandleChestUnlocked(ChestView view) => ShowPopUpInfo(chestUnlockedMessage);
+    private void HandleChestUnlockingSuccessful() => ShowPopUpInfo(startedUnlockingChestMessage);
+    private void HandleChestUnlockingFailed() => ShowPopUpInfo(chestQueuedMessage);
     private void GenerateRandomChest() => GameService.Instance.ChestService.GenerateRandomChest();
     private void ToggleOpenChestPanel(bool toggle) => openChestPanel.SetActive(toggle);
     private void ToggleStartUnlockingChestPanel(bool toggle) => startUnlockingChestPanel.SetActive(toggle);
@@ -124,7 +137,7 @@ public class UIService : MonoBehaviour, IPointerDownHandler
         int gems = currentChestSelected.controller.GetGemsToUnlock();
         if (!GameService.Instance.CurrencyService.HasEnoughGems(gems))
         {
-            ShowPopUpInfo("NOT ENOUGH GEMS");
+            ShowPopUpInfo(notEnoughGemsMessage);
             return;
         }
 
@@ -147,8 +160,8 @@ public class UIService : MonoBehaviour, IPointerDownHandler
     {
         GameService.Instance.CurrencyService.AdjustCoins(currentChestSelected.coinsReward);
         GameService.Instance.CurrencyService.AdjustGems(currentChestSelected.gemsReward);
-        GameService.Instance.EventService.onChestOpened(currentChestSelected);
-        GameService.Instance.ChestService.DestroyChest(currentChestSelected);
+        GameService.Instance.ChestService.ReturnChestToPool(currentChestSelected);
+        currentChestSelected.transform.SetParent(null);
         currentChestSelected = null;
         ToggleChestRewardsPanel(false);
     }

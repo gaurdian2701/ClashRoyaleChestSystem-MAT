@@ -29,6 +29,7 @@ public class ChestUnlockingState : IStateInterface
         controller.UpdateTimeStep(waitTime);
     }
 
+    public override void HandleClickEvent() => GameService.Instance.EventService.InvokeUnlockingChestClickedEvent(controller.ChestView);
     public override void OnStateExit()
     {
         waitTime = 0;

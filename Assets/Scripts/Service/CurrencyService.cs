@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class CurrencyService
 {
@@ -17,5 +14,5 @@ public class CurrencyService
     public void AdjustGems(int gems) { currentGems += gems; NotifyUIOfCurrencyChange(); }
     public bool HasEnoughGems(int gems) => currentGems >= gems;
 
-    private void NotifyUIOfCurrencyChange() => GameService.Instance.EventService.onCurrencyUpdated?.Invoke(currentCoins, currentGems);
+    private void NotifyUIOfCurrencyChange() => GameService.Instance.EventService.InvokeCurrencyUpdatedEvent(currentCoins, currentGems);
 }
